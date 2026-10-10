@@ -7,7 +7,7 @@ author: "iNITAL"
 cover:
     image: "image-for-test/test1.webp"
     alt: "A sample cover image"
-    caption: "封面测试1"
+    caption: "~ 八千代镇楼 ~"
 ---
 ## Hello World!
 
@@ -15,7 +15,7 @@ cover:
 
 这是一个测试markdown性能的文件。
 
-**高亮**，*斜体*，<u>下划线</u>，~~删除~~，^上标^，~下标~，==特别高亮==
+**粗体**，*斜体*，<u>下划线</u>，~~删除~~，^上标^，~下标~，==高亮==，++插入++
 
 - 无序列表
 - ——
@@ -25,17 +25,22 @@ cover:
 
 ## 表格：
 
-|      |      |      |
+|   A   |   B   |   C   |
 | ---- | ---- | ---- |
-|      |      |      |
-|      |      |      |
-|      |      |      |
+|   1   |   2   |   3   |
 
 ## 代码
 
 ~~~cpp
 #include <iostream>
+
+int main (){
+    std::cout<<"Hello World!\n";
+    return 0; 
+}
 ~~~
+
+行内代码：`printf("Hello World!\n");`
 
 ## 脚注
 
@@ -43,10 +48,12 @@ cover:
 
 ## 公式
 整行公式
+
 $$
-a^2 + b^2 = c^2
+E = mc^2
 $$
-行内公式：$ a^2 + b^2 = c^2 $
+
+行内公式经过测试似乎不行
 
 ## Mermaid图表
 
@@ -54,6 +61,6 @@ $$
 
 ## 图片
 
-![test](image-for-test/test.jpg)
+暂时不知道为什么文中图片引用不了。
 
 [^1]: 定义脚注

@@ -10,7 +10,7 @@
 <meta name="description" content="Hello World!
 基础格式
 这是一个测试markdown性能的文件。
-高亮，斜体，下划线，删除，^上标^，下标，==特别高亮==
+粗体，斜体，下划线，删除，上标，下标，高亮，插入
 
 无序列表
 ——
@@ -23,44 +23,38 @@
 
 	
 			
-					
-					
-					
+					A
+					B
+					C
 			
 	
 	
 			
-					
-					
-					
-			
-			
-					
-					
-					
-			
-			
-					
-					
-					
+					1
+					2
+					3
 			
 	
 
 代码
 #include &lt;iostream&gt;
+
+int main (){
+    std::cout&lt;&lt;&#34;Hello World!\n&#34;;
+    return 0; 
+}
+行内代码：printf(&quot;Hello World!\n&quot;);
 脚注
 脚注1
 公式
 整行公式
-
 $$
-a^2 &#43; b^2 = c^2
-$$
-行内公式：$ a^2 &#43; b^2 = c^2 $
+E = mc^2
+$$行内公式经过测试似乎不行
 Mermaid图表
 暂时不考虑弄。
 图片
-
+暂时不知道为什么文中图片引用不了。
 
 
 
@@ -225,13 +219,13 @@ Mermaid图表
     </h1>
     <div class="post-meta">
 
-<span title='2026-10-09 18:01:41 +0800 CST'>October 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>35 words</span>&nbsp;·&nbsp;<span>iNITAL</span>
+<span title='2026-10-09 18:01:41 +0800 CST'>October 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>43 words</span>&nbsp;·&nbsp;<span>iNITAL</span>
 
 </div>
   </header> 
 <figure class="entry-cover">
         <img loading="eager" src="http://localhost:1313/image-for-test/test1.webp" alt="A sample cover image">
-        <figcaption>封面测试1</figcaption>
+        <figcaption>~ 八千代镇楼 ~</figcaption>
 </figure><details class="toc" >
     <summary accesskey="c" title="(Alt + C)">
         <span class="title">Table of Contents</span>
@@ -255,7 +249,7 @@ Mermaid图表
   <div class="post-content md-content"><h2 id="hello-world">Hello World!<a hidden class="anchor" aria-hidden="true" href="#hello-world">#</a></h2>
 <h2 id="基础格式">基础格式<a hidden class="anchor" aria-hidden="true" href="#基础格式">#</a></h2>
 <p>这是一个测试markdown性能的文件。</p>
-<p><strong>高亮</strong>，<em>斜体</em>，<!-- raw HTML omitted -->下划线<!-- raw HTML omitted -->，<del>删除</del>，^上标^，<del>下标</del>，==特别高亮==</p>
+<p><strong>粗体</strong>，<em>斜体</em>，<!-- raw HTML omitted -->下划线<!-- raw HTML omitted -->，<del>删除</del>，<sup>上标</sup>，<sub>下标</sub>，<mark>高亮</mark>，<ins>插入</ins></p>
 <ul>
 <li>无序列表</li>
 <li>——</li>
@@ -268,44 +262,38 @@ Mermaid图表
 <table>
 	<thead>
 			<tr>
-					<th></th>
-					<th></th>
-					<th></th>
+					<th>A</th>
+					<th>B</th>
+					<th>C</th>
 			</tr>
 	</thead>
 	<tbody>
 			<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-			</tr>
-			<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-			</tr>
-			<tr>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
 			</tr>
 	</tbody>
 </table>
 <h2 id="代码">代码<a hidden class="anchor" aria-hidden="true" href="#代码">#</a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span></span></span></code></pre></div><h2 id="脚注">脚注<a hidden class="anchor" aria-hidden="true" href="#脚注">#</a></h2>
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;Hello World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>行内代码：<code>printf(&quot;Hello World!\n&quot;);</code></p>
+<h2 id="脚注">脚注<a hidden class="anchor" aria-hidden="true" href="#脚注">#</a></h2>
 <p>脚注<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
 <h2 id="公式">公式<a hidden class="anchor" aria-hidden="true" href="#公式">#</a></h2>
-<p>整行公式
-</p>
+<p>整行公式</p>
 $$
-a^2 + b^2 = c^2
-$$<p>
-行内公式：$ a^2 + b^2 = c^2 $</p>
+E = mc^2
+$$<p>行内公式经过测试似乎不行</p>
 <h2 id="mermaid图表">Mermaid图表<a hidden class="anchor" aria-hidden="true" href="#mermaid图表">#</a></h2>
 <p>暂时不考虑弄。</p>
 <h2 id="图片">图片<a hidden class="anchor" aria-hidden="true" href="#图片">#</a></h2>
-<p><img alt="test" loading="lazy" src="image-for-test/test.jpg"></p>
+<p>暂时不知道为什么文中图片引用不了。</p>
 <div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>

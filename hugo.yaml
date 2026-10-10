@@ -6,7 +6,9 @@ theme: "PaperMod"
 markup:
   goldmark:
     extensions:
+      strikethrough: false
       passthrough:
+        enable: true
         delimiters:
           block:
             - - \[
@@ -18,7 +20,18 @@ markup:
               - \)
             - - $
               - $
-        enable: true
+        
+      extras:
+        mark:
+          enable: true
+        insert:
+          enable: true          # ++插入文本++
+        subscript:
+          enable: true          # ~下标~
+        superscript:
+          enable: true          # ^上标^
+        delete:
+          enable: true
   highlight:
     noClasses: false
 
