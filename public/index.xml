@@ -13,7 +13,7 @@
       <link>http://localhost:1313/about/</link>
       <pubDate>Fri, 09 Oct 2026 20:26:34 +0800</pubDate>
       <guid>http://localhost:1313/about/</guid>
-      <description>&lt;h1 id=&#34;关于本站&#34;&gt;关于本站&lt;/h1&gt;
+      <description>&lt;h2 id=&#34;关于本站&#34;&gt;关于本站&lt;/h2&gt;
 &lt;p&gt;这是我的个人博客。大概规划是以下内容吧：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;ACGN&lt;/strong&gt;相关：
@@ -27,7 +27,7 @@
 &lt;li&gt;&lt;strong&gt;学习&lt;/strong&gt;相关：
 实际上我并不认为我会闲着没事写这种东西呢~&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h1 id=&#34;关于我&#34;&gt;关于我&lt;/h1&gt;
+&lt;h2 id=&#34;关于我&#34;&gt;关于我&lt;/h2&gt;
 &lt;p&gt;成分复杂的大学生呢~&lt;/p&gt;
 &lt;p&gt;社交媒体：&lt;/p&gt;
 &lt;ul&gt;
@@ -35,7 +35,7 @@
 &lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/people/loner-21-67&#34;&gt;知乎&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://chii.in/107775&#34;&gt;Bangumi&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h1 id=&#34;更新日志&#34;&gt;更新日志&lt;/h1&gt;
+&lt;h2 id=&#34;更新日志&#34;&gt;更新日志&lt;/h2&gt;
 &lt;p&gt;2026-10-9：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;站点建立，域名购买，测试。&lt;/li&gt;
