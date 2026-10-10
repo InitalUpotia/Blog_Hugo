@@ -3,6 +3,25 @@ languageCode: "zh-cn"
 title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
 
+markup:
+  goldmark:
+    extensions:
+      passthrough:
+        delimiters:
+          block:
+            - - \[
+              - \]
+            - - $$
+              - $$
+          inline:
+            - - \(
+              - \)
+            - - $
+              - $
+        enable: true
+  highlight:
+    noClasses: false
+
 params:
   homeInfoParams:
     Title: "iNITAL_'s Blog (^_^)"
@@ -40,6 +59,7 @@ params:
   hidemeta: false
   hideSummary: false
   tocopen: false
+  math: true
 
   # giscus:
   #   repo: "InitalUpotia/blog-comments"
