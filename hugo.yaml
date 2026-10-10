@@ -6,7 +6,12 @@ theme: "PaperMod"
 params:
   homeInfoParams:
     Title: "iNITAL_'s Blog (^_^)"
-    Content: "This is the content"
+    Content: "
+      在这里，你可以看到：\n
+      - ACGN相关内容，个人的游戏以及动漫库。\n
+      - 技术相关内容，个人瞎折腾各种东西的记录。\n
+      - 生活相关内容。\n
+      - [更多……](/about/)"
 
   socialIcons:
     - name: "github"
@@ -23,17 +28,30 @@ params:
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
   ShowWordCount: true
+  ShowToc: true
+
 
   defaultTheme: auto
   UseHugoToc: true
   
   disableSpecial1stPost: false
   disableScrollToTop: false
-  comments: false
+  comments: true
   hidemeta: false
   hideSummary: false
-  showtoc: false
   tocopen: false
+
+  # giscus:
+  #   repo: "InitalUpotia/blog-comments"
+  #   repoId: "R_kgDOVDYM8Q"           # 从 giscus.app 获取
+  #   category: "Announcements"
+  #   categoryId: "DIC_kwDOVDYM8c4DHePT"     # 从 giscus.app 获取
+  #   mapping: "pathname"
+  #   reactionsEnabled: "1"
+  #   emitMetadata: "0"
+  #   inputPosition: "bottom"
+  #   theme: "preferred_color_scheme"
+  #   lang: "zh-CN"
 
 menu:
   main:
@@ -56,10 +74,6 @@ menu:
       url: https://initalupotia.github.io/
       weight: 5
 
-label:
-  text: "Home"
-  #icon: /apple-touch-icon.png
-  #iconHeight: 35
 
 outputs:
   home:
