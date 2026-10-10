@@ -36,13 +36,17 @@
 &lt;li&gt;&lt;a href=&#34;https://chii.in/107775&#34;&gt;Bangumi&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1 id=&#34;更新日志&#34;&gt;更新日志&lt;/h1&gt;
-&lt;p&gt;2026-10-9：站点建立，域名购买，测试。&lt;/p&gt;
+&lt;p&gt;2026-10-9：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;站点建立，域名购买，测试。&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;2026-10-10：功能优化。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;支持Giscus评论。&lt;/li&gt;
 &lt;li&gt;支持KaTeX公式渲染。&lt;/li&gt;
 &lt;li&gt;支持一些额外的Markdown格式。&lt;/li&gt;
 &lt;li&gt;支持HogoMods短代码，即支持网易云音乐和bilibili的外部链接。&lt;/li&gt;
+&lt;li&gt;支持Vercount访问量统计显示。&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     <item>
