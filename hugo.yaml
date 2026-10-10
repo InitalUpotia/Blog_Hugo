@@ -1,5 +1,5 @@
 baseURL: "https://blog.inital.top/"
-languageCode: "zh-cn"
+locale: "zh-cn"
 title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
 
