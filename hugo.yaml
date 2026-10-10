@@ -3,6 +3,10 @@ languageCode: "zh-cn"
 title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
 
+module:
+  imports:
+    - path: github.com/hugomods/shortcodes
+
 markup:
   goldmark:
     extensions:
@@ -73,18 +77,6 @@ params:
   hideSummary: false
   tocopen: false
   math: true
-
-  # giscus:
-  #   repo: "InitalUpotia/blog-comments"
-  #   repoId: "R_kgDOVDYM8Q"           # 从 giscus.app 获取
-  #   category: "Announcements"
-  #   categoryId: "DIC_kwDOVDYM8c4DHePT"     # 从 giscus.app 获取
-  #   mapping: "pathname"
-  #   reactionsEnabled: "1"
-  #   emitMetadata: "0"
-  #   inputPosition: "bottom"
-  #   theme: "preferred_color_scheme"
-  #   lang: "zh-CN"
 
 menu:
   main:

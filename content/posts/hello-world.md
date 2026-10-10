@@ -9,7 +9,6 @@ cover:
     alt: "A sample cover image"
     caption: "~ 八千代镇楼 ~"
 ---
-## Hello World!
 
 ## 基础格式
 
@@ -62,5 +61,13 @@ $$
 ## 图片
 
 暂时不知道为什么文中图片引用不了。
+
+## 网易云音乐
+
+{{< netease-cloud-music id=22805132 type=song height=80 width=500 title="Masquerade" >}}
+
+## Bilibili
+
+{{< bilibili "BV1uhYueJErx" >}}
 
 [^1]: 定义脚注
