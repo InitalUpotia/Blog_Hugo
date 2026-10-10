@@ -52,4 +52,5 @@ cover:
 - 支持一些额外的Markdown格式。
 - 支持HogoMods短代码，即支持网易云音乐和bilibili的外部链接。
 - 支持Vercount访问量统计显示。
+- 修复了中文字数不加入统计的Bug。
 
