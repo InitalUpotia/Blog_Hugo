@@ -1,0 +1,116 @@
+/* ============================================
+   全局：防止滚动条出现/消失导致内容位移
+   ============================================ */
+html {
+  scrollbar-gutter: stable;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* 让导航栏容器允许下拉菜单溢出 */
+.header,
+.nav,
+.menu {
+  overflow: visible !important;
+}
+
+/* ============================================
+   下拉菜单
+   ============================================ */
+.dropdown {
+  position: relative !important;
+  display: inline-block;
+  line-height: inherit;
+}
+
+.dropbtn {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 下拉内容：默认隐藏，悬停时渐入 */
+.dropdown-content {
+  position: absolute !important;
+  top: 100%;
+  left: 0;
+  min-width: 110px;
+  max-width: calc(100vw - 32px);
+
+  /* 半透明背景 + 毛玻璃 */
+  background-color: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  padding: 2px 0;
+  margin: 0;
+  list-style: none;
+  z-index: 1000;
+
+  /* 隐藏状态 */
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease,
+              transform 0.2s ease,
+              visibility 0.2s,
+              max-height 0.25s ease;
+}
+
+/* 深色模式：半透明深色背景 */
+.dark .dropdown-content {
+  background-color: rgba(20, 20, 20, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+/* 下拉项 */
+.dropdown-content li {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-content li a {
+  display: block;
+  padding: 5px 12px;
+  color: var(--primary);
+  font-size: 0.85em;
+  line-height: 1.4;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.dropdown-content li a:hover {
+  color: var(--accent);
+}
+
+/* 悬停时渐入展开 */
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  max-height: 200px;
+  transform: translateY(0);
+}
+
+/* 小箭头 */
+.arrow {
+  font-size: 0.6em;
+  margin-left: 3px;
+  display: inline-block;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.dropdown:hover .arrow {
+  transform: rotate(180deg);
+}

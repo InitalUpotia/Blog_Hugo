@@ -71,7 +71,7 @@ params:
   ShowAllPagesInArchive: true
   ShowWordCount: true
   ShowToc: true
-
+  ShowRssButtonInSectionTermList: true
 
   defaultTheme: auto
   UseHugoToc: true
@@ -108,10 +108,32 @@ menu:
       name: 友链
       url: https://initalupotia.github.io/
       weight: 6
+    - identifier: links
+      name: 另我空间
+      weight: 71
+    - identifier: link-a
+      name: 梦的原点
+      url: https://initalupotia.github.io/
+      weight: 72
+      parent: links
+    - identifier: link-b
+      name: 未麻的部屋
+      url: https://initalupotia.github.io/my-ai-blog/
+      weight: 73
+      parent: links
 
 
 outputs:
   home:
     - HTML
     - RSS
-    - JSON
+    - JSON   # 如果你之前为了搜索启用了 JSON，可以保留
+  section:
+    - HTML
+    - RSS
+  taxonomy:
+    - HTML
+    - RSS
+  term:
+    - HTML
+    - RSS
