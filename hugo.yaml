@@ -104,10 +104,6 @@ menu:
     - name: 关于
       url: /about/
       weight: 5
-    - identifier: example
-      name: 友链
-      url: https://initalupotia.github.io/
-      weight: 6
     - identifier: links
       name: 另我空间
       weight: 71
