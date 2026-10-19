@@ -75,7 +75,6 @@ params:
   ShowToc: true
   ShowRssButtonInSectionTermList: true
 
-
   defaultTheme: auto
   UseHugoToc: true
   
@@ -91,22 +90,25 @@ menu:
   main:
     - name: 文章
       url: /posts/
-      weight: 1
+      weight: 10
     - identifier: archives
       name: 归档
       url: /archives/
-      weight: 2
+      weight: 20
     - identifier: categories
       name: 分类
       url: /categories/
-      weight: 3
+      weight: 30
     - identifier: tags
       name: 标签
       url: /tags/
-      weight: 4
+      weight: 40
+    - name: 搜索
+      url: /search/
+      weight: 50
     - name: 关于
       url: /about/
-      weight: 5
+      weight: 60
     - identifier: links
       name: 另我空间
       weight: 71
