@@ -6,8 +6,17 @@
     <description>Recent content on ~ iNITAL_&#39;s Blog ~</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 13 Oct 2026 22:23:21 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2026 23:12:26 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>杭州游记-1</title>
+      <link>http://localhost:1313/posts/%E6%9D%AD%E5%B7%9E%E6%B8%B8%E8%AE%B0-1/</link>
+      <pubDate>Sat, 17 Oct 2026 23:12:26 +0800</pubDate>
+      <guid>http://localhost:1313/posts/%E6%9D%AD%E5%B7%9E%E6%B8%B8%E8%AE%B0-1/</guid>
+      <description>&lt;p&gt;周六正好没什么事，所以就打着为实践作业取材的名义去杭州玩一趟吧。&lt;/p&gt;
+&lt;h2 id=&#34;草率的开始&#34;&gt;草率的开始&lt;/h2&gt;
+&lt;p&gt;本来想乘高铁去杭州的，不过如果买了高铁票那么出发的时间就定死了，如果突然想睡懒觉就很烦，于是就选择了坐地铁，回程选择高铁。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>关于GitHub Pages被校园网SNI阻断的问题</title>
       <link>http://localhost:1313/posts/%E5%85%B3%E4%BA%8Egithubio%E8%A2%AB%E6%A0%A1%E5%9B%AD%E7%BD%91sni%E9%98%BB%E6%96%AD%E7%9A%84%E9%97%AE%E9%A2%98/</link>
@@ -45,7 +54,7 @@
 分享个人看过的动漫，玩过的游戏，看过的漫画之类的吧。（可以理解为微信朋友圈的拓展？）
 也会分享一段时间看到的优秀二创、美图、梗图之类的吧。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;技术&lt;/strong&gt;相关：
-分享折腾的一些没用的小知识吧？毕竟连本站的建设也全靠deepseek网页端的指导呢。
+分享折腾的一些没用的小知识吧？毕竟连本站的建设也全靠 deepseek 网页端的指导呢。
 分享一些捡到的各种奇奇怪怪的电子产品？&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;生活&lt;/strong&gt;相关：
 旅行的所见所感？生活中的小琐事？&lt;/li&gt;

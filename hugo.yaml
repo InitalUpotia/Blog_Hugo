@@ -10,6 +10,8 @@ module:
 
 markup:
   goldmark:
+    parser:
+      wrapStandAloneImageWithinParagraph: false   # 图片注释
     extensions:
       strikethrough: false
       passthrough:
@@ -72,6 +74,7 @@ params:
   ShowWordCount: true
   ShowToc: true
   ShowRssButtonInSectionTermList: true
+
 
   defaultTheme: auto
   UseHugoToc: true

@@ -114,3 +114,63 @@ html, body {
 .dropdown:hover .arrow {
   transform: rotate(180deg);
 }
+
+
+/* 让包含图片的 figure 容器居中 */
+figure {
+  text-align: center;
+  margin: 2em 0;
+}
+
+/* 让图片本身居中（针对尺寸较小的图片） */
+figure img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border-radius: var(--radius); /* 顺便加上一点圆角，和主题更搭 */
+}
+
+/* 让图注文字居中、字号稍微小一点、颜色变淡 */
+figcaption {
+  text-align: center;
+  font-size: 0.75em;       /* 字号缩小到原来的 85% */
+  opacity: 0.7;                 /* 数字越小越淡，可试 0.5 ~ 0.8 */
+  color: var(--secondary); /* 使用主题的次要文字颜色，通常比正文淡 */
+  margin-top: 0.5em;       /* 与图片之间留一点空隙 */
+  /* font-style: italic;      可选：图注用斜体看起来更像注释 */
+  font-weight: 400 !important;  /* 强制恢复正常字重，去掉粗体 */
+  font-style: normal;           /* 中文字体建议关掉斜体，否则看起来会糊成一团 */
+}
+
+/* ============================================
+   文章正文首行缩进
+   ============================================ */
+
+/* 选中文章正文区域内的所有段落 */
+.post-content p {
+  text-indent: 2em; /* 缩进两个中文字符的宽度 */
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* 特殊排除：防止图片、列表、引用、代码块内部被误缩进 */
+
+/* 1. 如果段落里只有一张图片，取消缩进，让图片居中 */
+.post-content p:has(img) {
+  text-indent: 0;
+}
+
+/* 2. 列表项内部的文字不需要缩进 */
+.post-content li p {
+  text-indent: 0;
+}
+
+/* 3. 引用块内部的文字不需要首行缩进 */
+.post-content blockquote p {
+  text-indent: 0;
+}
+
+/* 4. 图片下方的图注不需要缩进 */
+.post-content figcaption {
+  text-indent: 0;
+}
