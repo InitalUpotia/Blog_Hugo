@@ -1,7 +1,7 @@
 ---
 date: '2026-10-13T22:23:21+08:00'
 draft: false
-title: '关于GitHub Pages被校园网SNI阻断的问题'
+title: '关于 GitHub Pages 被校园网 SNI 阻断的问题'
 author: 'iNITAL'
 tags: ['技术','测试']
 ---

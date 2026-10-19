@@ -1,7 +1,7 @@
 ---
 date: '2026-10-11T14:37:47+08:00'
 draft: false
-title: 'C语言先修课测试游记'
+title: 'C 语言先修课测试游记'
 author: 'iNITAL'
 tags: ['生活','游记']
 cover:
