@@ -174,3 +174,80 @@ figcaption {
 .post-content figcaption {
   text-indent: 0;
 }
+
+/* ============================================
+   专栏卡片：左图右文布局
+   ============================================ */
+
+.column-card {
+    display: flex;
+    align-items: stretch; 
+    padding: 0;           
+    overflow: hidden;     
+    position: relative;   /* 👈 关键：确保遮罩层以卡片为基准 */
+}
+
+/* 左侧缩略图容器 */
+.column-cover {
+    flex: 0 0 140px;      
+    position: relative;
+    background: var(--tertiary); 
+}
+
+.column-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    
+    display: block;
+}
+
+/* 右侧文字信息区域 */
+.column-info {
+    flex: 1;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    /* 👈 删除了原来的 z-index: 1，防止它挡住底部的透明链接 */
+}
+
+/* 微调右侧标题和间距 */
+.column-info .entry-header h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.column-info .entry-content p {
+    margin: 0 0 12px 0;
+    font-size: 0.9em;
+    color: var(--secondary);
+}
+
+.column-info .entry-footer {
+    margin-top: auto;     
+}
+
+/* 👇 核心修复：强制透明链接覆盖整个卡片，并处于最顶层 */
+.column-card .entry-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* 层级最高，确保能响应点击 */
+}
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+    .column-card {
+        flex-direction: column;
+    }
+    .column-cover {
+        flex: 0 0 160px;
+        width: 100%;
+    }
+    .column-info {
+        padding: 16px;
+    }
+}

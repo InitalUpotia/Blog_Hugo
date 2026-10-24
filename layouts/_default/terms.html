@@ -1,0 +1,75 @@
+{{- define "main" }}
+
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+</header>
+
+{{- if .Content }}
+<div class="post-content">
+    {{ .Content }}
+</div>
+{{- end }}
+
+<div class="post-list">
+    {{ range .Data.Terms.Alphabetical }}
+    
+    {{/* 寻找该专栏下最新的一篇文章 */}}
+    {{ $latestPage := .Page }}
+    {{ $targetPage := .Page }}
+    {{ $coverImage := "" }}
+    
+    {{ if .Pages }}
+        {{ $sortedPages := sort .Pages "Lastmod" "desc" }}
+        {{ $latestPage = index $sortedPages 0 }}
+        
+        {{/* 遍历该专栏下的文章，找到第一张存在的封面图 */}}
+        {{ range $sortedPages }}
+            {{ if and .Params.cover .Params.cover.image }}
+                {{ $targetPage = . }}
+                {{ $coverImage = .Params.cover.image }}
+                {{ break }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    <article class="post-entry column-card">
+        
+        {{/* 如果找到了封面图，则渲染左侧容器 */}}
+        {{ if $coverImage }}
+        {{ $imgSrc := $coverImage }}
+        
+        {{/* 核心修复：解析 Page Bundle 中的本地图片资源 */}}
+        {{ if not (urls.Parse $coverImage).IsAbs }}
+            {{ if not (hasPrefix $coverImage "/") }}
+                {{ with $targetPage.Resources.GetMatch $coverImage }}
+                    {{ $imgSrc = .RelPermalink }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+        
+        <div class="column-cover">
+            <!-- 这里输出的 $imgSrc 就是被 Hugo 解析好的完整路径 -->
+            <img src="{{ $imgSrc }}" alt="{{ .Page.Title }} 缩略图" loading="lazy">
+        </div>
+        {{ end }}
+
+        <div class="column-info">
+            <header class="entry-header">
+                <h2>{{ .Page.Title }}</h2>
+            </header>
+            
+            <div class="entry-content">
+                <p>共收录 {{ .Count }} 篇文章</p>
+            </div>
+
+            <footer class="entry-footer">
+                <span class="post-meta">最后更新：{{ $latestPage.Lastmod.Format "2006-01-02" }}</span>
+            </footer>
+        </div>
+        
+        <a class="entry-link" aria-label="post link to {{ .Page.Title }}" href="{{ .Page.RelPermalink }}"></a>
+    </article>
+    {{- end }}
+</div>
+
+{{- end }}

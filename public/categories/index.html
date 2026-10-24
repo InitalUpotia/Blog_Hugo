@@ -129,7 +129,7 @@
             </li><li>
                 <a href="http://localhost:1313/categories/">
                     <span class="active">
-                        分类
+                        专栏
                     </span>
                 </a>
             </li><li>
@@ -173,8 +173,50 @@
     <h1>Categories</h1>
 </header>
 
-<ul class="terms-tags">
-</ul>
+<div class="post-content">
+    <ul class="terms-grid">
+        
+        <li>
+            <a href="/categories/inital-%E7%9A%84%E5%9E%83%E5%9C%BE%E7%AB%99-~/" class="term-card">
+                <h3>INITAL 的垃圾站 ~</h3>
+                <span>共 1 篇文章</span>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+<style>
+    .terms-grid {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+    .term-card {
+        display: block;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--entry);
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .term-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+    }
+    .term-card h3 {
+        margin: 0 0 8px 0;
+        color: var(--primary);
+    }
+    .term-card span {
+        font-size: 0.85em;
+        color: var(--secondary);
+    }
+</style>
     </main>
     
 <footer class="footer">
