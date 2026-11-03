@@ -348,6 +348,8 @@ AI 提示在终端输入一串代码可以跳过联网，但是啥用都没有�
 
 不过最主要的是，我之前一直看的一个 UP 的视频 [每天安装 Arch，直到我找到对象](https://www.bilibili.com/video/BV1cmNGzqEzt/?spm_id_from=333.337.search-card.all.click&vd_source=b332b2aaf83ea79674f90ade06bcfad8) **竟然完结了**？！不是同志，这是能完结的东西啊啊啊！你完结了我看什么啊喂！
 
+说好的装一辈子的 Arch Linux 的来说！
+
 不会是大肥鱼吧？你绝对是在骗我！~~你是有多精通面向对象的编程语言啊！~~
 
 那还说啥了，Arch Linux 启动！

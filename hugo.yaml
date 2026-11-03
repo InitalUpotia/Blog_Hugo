@@ -3,6 +3,14 @@ locale: "zh-cn"
 hasCJKLanguage: true
 title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
+enableGitInfo: true
+
+# 定义日期读取的优先级
+frontmatter:
+  lastmod:
+    - :git       # 👈 优先从 Git 提交记录里找
+    - lastmod    # 👈 如果没开 Git，就找文章里的 lastmod 字段
+    - :default   # 👈 如果都没有，就用文章日期(date)作为最后修改时间
 
 taxonomies:
   category: columns   # 👈 把 categories 改名为 columns

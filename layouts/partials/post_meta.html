@@ -1,0 +1,18 @@
+{{- $scratch := newScratch }}
+
+{{- if not .Date.IsZero -}}
+    {{- $scratch.Add "meta" (slice (printf "<span title='%s'>%s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- end }}
+
+{{/* 👇 核心逻辑：判断并添加最后修改时间 👇 */}}
+{{- if not .Lastmod.IsZero -}}
+    {{/* 只有当 Lastmod 比 Date 晚超过 1 分钟时才显示，避免刚发布的文章就显示更新 */}}
+    {{- if gt (.Lastmod.Sub .Date).Minutes 1 }}
+        {{- $lastmod := printf "最后更新 <span title='%s'>%s</span>" (.Lastmod) (.Lastmod | time.Format (default ":date_long" site.Params.DateFormat)) }}
+        {{- $scratch.Add "meta" (slice $lastmod) }}
+    {{- end }}
+{{- end }}
+
+{{- with ($scratch.Get "meta") }}
+    {{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
+{{- end -}}

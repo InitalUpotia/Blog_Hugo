@@ -6,7 +6,7 @@
     <description>Recent content in Posts on ~ iNITAL_&#39;s Blog ~</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 01 Nov 2026 23:23:28 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2026 23:28:10 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>iNITAL 的垃圾站：旧瓶装新酒，旧物遇新人——Lenovo ThinkPad T430</title>
@@ -55,14 +55,6 @@
       <description>&lt;p&gt;周六正好没什么事，所以就打着为实践作业取材的名义去杭州玩一趟吧。&lt;/p&gt;
 &lt;h2 id=&#34;草率的开始&#34;&gt;草率的开始&lt;/h2&gt;
 &lt;p&gt;本来想乘高铁去杭州的，不过如果买了高铁票那么出发的时间就定死了，如果突然想睡懒觉就很烦，于是就选择了坐地铁，回程选择高铁。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>关于 GitHub Pages 被校园网 SNI 阻断的问题</title>
-      <link>http://localhost:1313/posts/%E5%85%B3%E4%BA%8Egithubio%E8%A2%AB%E6%A0%A1%E5%9B%AD%E7%BD%91sni%E9%98%BB%E6%96%AD%E7%9A%84%E9%97%AE%E9%A2%98/</link>
-      <pubDate>Tue, 13 Oct 2026 22:23:21 +0800</pubDate>
-      <guid>http://localhost:1313/posts/%E5%85%B3%E4%BA%8Egithubio%E8%A2%AB%E6%A0%A1%E5%9B%AD%E7%BD%91sni%E9%98%BB%E6%96%AD%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
-      <description>&lt;p&gt;今天闲着没事用校园网查看我那个&lt;code&gt;未麻的部屋&lt;/code&gt;中 AI 发布的情况，然后发现无法访问，然后就又试了下我另一个 GitHub Pages，发现也不行。&lt;/p&gt;
-&lt;p&gt;总结下来，认为不是 DNS 劫持，而是 SNI 阻断，这就很难办了，除了自定义域名现在想不到简单的方法。&lt;/p&gt;</description>
     </item>
     <item>
       <title>C 语言先修课测试游记</title>
