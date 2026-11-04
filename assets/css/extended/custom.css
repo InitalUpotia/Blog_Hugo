@@ -1,30 +1,12 @@
-/* ============================================
-   OpenType 方案：随缘区分 l 和 I
-   ============================================ */
-
-/* 针对正文：开启常见的字形变体 */
 body {
-  /* 
-     cv05, cv08: 苹果 SF Pro 等字体用来改变 l 和 I 形状的特性代码
-     ss20: Windows Segoe UI 用来区分 l 和 I 的特性
-     zero: 顺便把数字 0 变成中间带斜杠的样式（写技术博客防混淆非常实用）
-  */
-  font-feature-settings: "cv05" 1, "cv08" 1, "ss20" 1, "zero" 1 !important;
-  /* 老版本浏览器兼容 */
-  -webkit-font-feature-settings: "cv05" 1, "cv08" 1, "ss20" 1, "zero" 1 !important;
+  /* Tahoma 是 Windows 自带的，区分度极高，且比 Verdana 紧凑 */
+  font-family: "Tahoma", "Verdana", "Lucida Sans Unicode", -apple-system, "Segoe UI", sans-serif !important;
 }
 
-/* 针对代码块：强制指定带明显区分的等宽字体栈 */
+/* 代码块保持使用 Consolas */
 code, pre, kbd, samp, .highlight, .chroma {
-  /* 
-    Consolas (Win) 和 Menlo (Mac) 天生就能清晰区分 l、I 和 1，且自带斜杠 0 
-    这比去折腾特性靠谱得多 
-  */
-  font-family: Consolas, Menlo, Monaco, "Courier New", monospace !important;
-  /* 开启代码连字（比如把 => 变成一个箭头），看起来更舒服 */
-  font-variant-ligatures: contextual !important;
-  font-feature-settings: "calt" 1 !important;
-}
+  font-family: "Consolas", "Menlo", "Monaco", monospace !important;
+} 
 
 /* ============================================
    全局：防止滚动条出现/消失导致内容位移

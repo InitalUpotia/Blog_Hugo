@@ -3,7 +3,7 @@ date: '2026-10-24T14:57:28+08:00'
 draft: false
 title: 'iNITAL 的垃圾站：多彩时代，多变形态——Lenovo YOGA 3 11'
 author: 'iNITAL'
-columns: ['iNITAL 的垃圾站 ~']
+columns: ['iNITAL 的垃圾站']
 tags: ['技术','硬件','Windows 平板']
 cover:
     image: "1-2.webp"

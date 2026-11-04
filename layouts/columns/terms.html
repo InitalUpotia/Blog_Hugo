@@ -67,7 +67,8 @@
 
         <div class="column-info">
             <header class="entry-header">
-                <h2>{{ .Page.Title }}</h2>
+                {{/* 👇 把 .Page.Title 换成 .Page.Data.Term 👇 */}}
+                <h2>{{ .Page.Data.Term }}</h2>
             </header>
             <div class="entry-content">
                 <p>共收录 {{ .Count }} 篇文章</p>

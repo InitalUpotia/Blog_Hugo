@@ -3,7 +3,7 @@ date: '2026-11-01T23:23:28+08:00'
 draft: false
 title: 'iNITAL 的垃圾站：旧瓶装新酒，旧物遇新人——Lenovo ThinkPad T430'
 author: 'iNITAL'
-columns: ['iNITAL 的垃圾站 ~']
+columns: ['iNITAL 的垃圾站']
 tags: ['技术','硬件','ThinkPad','CRT','黑苹果','Linux','杂谈','回忆']
 cover:
     image: "cover.webp"

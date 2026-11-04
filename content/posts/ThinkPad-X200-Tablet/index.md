@@ -1,9 +1,9 @@
 ---
 date: '2026-10-29T23:30:12+08:00'
 draft: false
-title: 'iNITAL 的垃圾站：盘旋回落的纸飞机——ThinkPad X200 Tablet'
+title: 'iNITAL 的垃圾站：盘旋回落的纸飞机——Lenovo ThinkPad X200 Tablet'
 author: 'iNITAL'
-columns: ['iNITAL 的垃圾站 ~']
+columns: ['iNITAL 的垃圾站']
 tags: ['技术','硬件','Windows 平板','ThinkPad']
 cover:
     image: "2.webp"

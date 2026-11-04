@@ -3,7 +3,7 @@ date: '2026-10-30T18:57:28+08:00'
 draft: true
 title: 'iNITAL 的垃圾站：美好而短暂的邂逅——Lenovo ThinkPad T61'
 author: 'iNITAL'
-columns: ['iNITAL 的垃圾站 ~']
+columns: ['iNITAL 的垃圾站']
 tags: ['技术','硬件','ThinkPad','回忆']
 cover:
     image: "1.webp"
