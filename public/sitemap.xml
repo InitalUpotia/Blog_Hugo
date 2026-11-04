@@ -3,46 +3,61 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/columns/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/crt/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/columns/inital-%E7%9A%84%E5%9E%83%E5%9C%BE%E7%AB%99-~/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/thinkpad-t430/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/linux/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/thinkpad/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <loc>http://localhost:1313/columns/%E4%B8%8D%E6%AD%A2-initaial/</loc>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E5%9B%9E%E5%BF%86/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <loc>http://localhost:1313/posts/%E6%B5%85%E8%B0%88%E5%B9%BD%E9%BB%98%E8%80%81%E6%97%A5/</loc>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <loc>http://localhost:1313/tags/%E4%BA%92%E8%81%94%E7%BD%91%E7%8E%B0%E8%B1%A1%E7%A0%94%E7%A9%B6/</loc>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/%E6%84%9F%E6%83%B3/</loc>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E6%9D%82%E8%B0%88/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2026-11-04T22:09:28+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/crt/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/columns/inital-%E7%9A%84%E5%9E%83%E5%9C%BE%E7%AB%99-~/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/thinkpad-t430/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/linux/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/thinkpad/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/%E5%9B%9E%E5%BF%86/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E7%A1%AC%E4%BB%B6/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
-    <lastmod>2026-11-01T23:28:10+08:00</lastmod>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/thinkpad-x200-tablet/</loc>
     <lastmod>2026-11-01T23:28:10+08:00</lastmod>
@@ -74,11 +89,8 @@
     <loc>http://localhost:1313/posts/%E5%BB%BA%E7%AB%99%E5%B0%8F%E8%AE%B0~/</loc>
     <lastmod>2026-10-10T15:57:28+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/%E6%84%9F%E6%83%B3/</loc>
-    <lastmod>2026-10-10T15:57:28+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/about/</loc>
-    <lastmod>2026-10-24T15:10:21+08:00</lastmod>
+    <lastmod>2026-11-03T16:35:47+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/hello-world/</loc>
     <lastmod>2026-10-10T17:51:59+08:00</lastmod>

@@ -20,22 +20,42 @@
     {{ if .Pages }}
         {{ $sortedPages := sort .Pages "Lastmod" "desc" }}
         {{ $latestPage = index $sortedPages 0 }}
+        
+        {{/* 遍历该专栏，寻找第一篇有封面的文章 */}}
         {{ range $sortedPages }}
-            {{ if and .Params.cover .Params.cover.image }}
+            {{ $currentCover := "" }}
+            {{ with .Params.cover }}
+                {{ with .image }}
+                    {{ $currentCover = . }}
+                {{ end }}
+            {{ end }}
+            
+            {{ if $currentCover }}
                 {{ $targetPage = . }}
-                {{ $coverImage = .Params.cover.image }}
+                {{ $coverImage = $currentCover }}
                 {{ break }}
             {{ end }}
         {{ end }}
     {{ end }}
 
     <article class="post-entry column-card">
+        
         {{ if $coverImage }}
         {{ $imgSrc := $coverImage }}
-        {{ if not (urls.Parse $coverImage).IsAbs }}
-            {{ if not (hasPrefix $coverImage "/") }}
-                {{ with $targetPage.Resources.GetMatch $coverImage }}
-                    {{ $imgSrc = .RelPermalink }}
+        
+        {{/* 👇 终极路径解析逻辑 👇 */}}
+        {{ if not (hasPrefix $coverImage "http") }}
+            {{ if hasPrefix $coverImage "/" }}
+                {{/* 如果是 / 开头的绝对路径（比如放在 static 里的） */}}
+                {{ $imgSrc = $coverImage | relURL }}
+            {{ else }}
+                {{/* 如果是相对路径（Page Bundle） */}}
+                {{ $match := $targetPage.Resources.GetMatch $coverImage }}
+                {{ if $match }}
+                    {{ $imgSrc = $match.RelPermalink }}
+                {{ else }}
+                    {{/* 兜底：如果在 page bundle 里没找到，当作 static 目录下的相对路径处理 */}}
+                    {{ $imgSrc = $coverImage | relURL }}
                 {{ end }}
             {{ end }}
         {{ end }}
