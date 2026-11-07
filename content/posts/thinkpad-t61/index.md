@@ -1,6 +1,6 @@
 ---
-date: '2026-10-30T18:57:28+08:00'
-draft: true
+date: '2026-11-07T16:02:28+08:00'
+draft: false
 title: 'iNITAL 的垃圾站：美好而短暂的邂逅——Lenovo ThinkPad T61'
 author: 'iNITAL'
 columns: ['iNITAL 的垃圾站']
