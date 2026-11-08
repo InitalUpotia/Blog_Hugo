@@ -390,6 +390,26 @@ details.toc summary {
   overflow: hidden;
 }
 
+/* ---- 页脚：与文章卡片一致的半透明玻璃 ---- */
+.footer {
+  /* 和 .main 的内容宽度对齐：桌面端 main-width，移动端左右各留一个 gap */
+  max-width: var(--main-width);
+  width: calc(100% - var(--gap) * 2);
+  margin: 1rem auto 2rem;
+
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+}
+
+/* 注入到主题 footer 里的统计行，稍微和版权行拉开一点 */
+.footer-extra {
+  margin-top: 6px;
+}
+
 @media screen and (max-width: 768px) {
   .post-single {
     padding: 1.5rem 1.25rem !important;
@@ -400,7 +420,8 @@ details.toc summary {
   .post-entry,
   .first-entry,
   .column-card,
-  .post-single {
+  .post-single,
+  .footer {
     --glass-blur: 2px;
   }
 }
@@ -410,7 +431,8 @@ details.toc summary {
   .post-entry,
   .first-entry,
   .column-card,
-  .post-single {
+  .post-single,
+  .footer {
     background: var(--entry) !important;
   }
 }
@@ -438,4 +460,49 @@ body::after {
 [data-theme="dark"] body::before {
   background-image: var(--bg-image, none);
   filter: none;
+}
+
+/* Giscus 评论区圆角 */
+.comments {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.comments iframe.giscus-frame {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius);
+}
+
+/* Waline 留言板：融入站点的半透明卡片 */
+#waline {
+  --waline-font-size: 14px;
+  --waline-theme-color: #4f8cff;
+  --waline-active-color: #6ea2ff;
+
+  --waline-bg-color: transparent;
+  --waline-bg-color-light: rgba(255, 255, 255, 0.22);
+  --waline-bg-color-hover: rgba(255, 255, 255, 0.35);
+  --waline-border-color: var(--border);
+  --waline-border: 1px solid var(--border);
+
+  --waline-color: var(--content);
+  --waline-light-grey: var(--secondary);
+  --waline-dark-grey: var(--secondary);
+  --waline-info-color: var(--secondary);
+
+  --waline-box-shadow: none;
+  --waline-avatar-radius: var(--radius);
+}
+
+[data-theme="dark"] #waline {
+  --waline-bg-color-light: rgba(255, 255, 255, 0.05);
+  --waline-bg-color-hover: rgba(255, 255, 255, 0.10);
+  --waline-border-color: var(--border);
+  --waline-border: 1px solid var(--border);
+  --waline-color: var(--content);
+}
+
+.waline-wrap {
+  margin-top: 2rem;
 }

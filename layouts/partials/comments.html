@@ -5,9 +5,9 @@
 <script>
   (function () {
     function giscusTheme() {
-      // PaperMod 的深色是 html[data-theme="dark"]
-      // 想更贴近 PaperMod 的深灰配色，可以把 'dark' 换成 'dark_dimmed'
-      return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      return document.documentElement.dataset.theme === 'dark'
+        ? 'noborder_dark'
+        : 'noborder_light';
     }
 
     // 1. 动态创建 client.js，避免 iframe 先以错误主题渲染再切换
@@ -25,7 +25,7 @@
     s.setAttribute('data-emit-metadata', '0');
     s.setAttribute('data-input-position', 'bottom');
     s.setAttribute('data-theme', giscusTheme());   // 👈 初始主题
-    s.setAttribute('data-lang', 'lazy');
+    s.setAttribute('data-lang', 'zh-CN');
     document.querySelector('.comments').appendChild(s);
 
     // 2. 页面切换主题时，通知 iframe 换肤

@@ -4,6 +4,7 @@ draft: false
 title: 'iNITAL 的垃圾站：旧瓶装新酒，旧物遇新人——Lenovo ThinkPad T430'
 author: 'iNITAL'
 columns: ['iNITAL 的垃圾站']
+description: '这篇记录 ThinkPad T430 的拆机、升级和黑苹果折腾过程。'
 tags: ['技术','硬件','ThinkPad','CRT','黑苹果','Linux','杂谈','回忆']
 cover:
     image: "cover.webp"

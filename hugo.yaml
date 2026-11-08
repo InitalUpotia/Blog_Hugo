@@ -1,5 +1,7 @@
 baseURL: "https://blog.inital.top/"
-locale: "zh-cn"
+locale: "zh-CN"
+defaultContentLanguage: "zh"
+languageCode: "zh-CN"
 hasCJKLanguage: true
 title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
@@ -58,6 +60,9 @@ markup:
     noClasses: false
 
 params:
+  description: "iNITAL 的个人博客：ACGN、技术、生活与学习记录。"
+  keywords: ["iNITAL", "博客", "ACGN", "ThinkPad", "Linux", "二次元"]
+  
   homeInfoParams:
     Title: "iNITAL_'s Blog (\\^_\\^)"
     Content: "
@@ -122,6 +127,9 @@ menu:
     - name: 搜索
       url: /search/
       weight: 50
+    - name: 留言板
+      url: /guestbook/
+      weight: 55
     - name: 关于
       url: /about/
       weight: 60

@@ -1,0 +1,35 @@
+{{- define "main" }}
+<article class="post-single">
+  <header class="post-header">
+    {{ partial "breadcrumbs.html" . }}
+    <h1 class="post-title">{{ .Title }}</h1>
+  </header>
+
+  <div class="post-content md-content">
+    {{ .Content }}
+  </div>
+
+  <div id="waline" class="waline-wrap"></div>
+
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@3.16.2/dist/waline.css">
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@3.16.2/dist/waline.js';
+
+    init({
+      el: '#waline',
+      serverURL: 'https://waline.inital.top',
+      lang: 'zh-CN',
+      dark: 'html[data-theme="dark"]',
+
+      login: 'enable',          // 允许匿名留言，也可以登录
+      meta: ['nick', 'mail', 'link'],
+      requiredMeta: ['nick'],   // 昵称必填，邮箱和网址可选
+
+      reaction: false,          // 留言板不需要文章反应
+    //   imageUploader: false,     // 禁止上传图片，减少滥用
+      pageview: false,
+      comment: false
+    });
+  </script>
+</article>
+{{- end }}

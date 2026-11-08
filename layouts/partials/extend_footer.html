@@ -1,20 +1,37 @@
 {{- if not (.Param "hideFooter") }}
-<footer class="footer">
-    <div>
-        总访客数 <span id="vercount_value_site_uv"></span> 人   总访问量 <span id="vercount_value_site_pv"></span> 次 <br>
+{{/*
+  PaperMod 先输出 <footer class="footer">，再调用 extend_footer。
+  这里不再新建 footer，而是把统计内容注入到已有的 footer 里，
+  避免页面上出现两个并排的玻璃卡片。
+*/}}
+<template id="footer-extra">
+    <div class="footer-extra">
+        总访客数 <span id="vercount_value_site_uv"></span> 人 · 总访问量 <span id="vercount_value_site_pv"></span> 次<br>
         本站已运行 <span id="run-time-detail">计算中...</span>
     </div>
-</footer>
-
+</template>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  (function () {
+    var footer = document.querySelector('.footer');
+    var tpl = document.getElementById('footer-extra');
+    if (footer && tpl) {
+      footer.appendChild(tpl.content.cloneNode(true));
+    }
+  })();
+</script>
+
+<script>
+  (function () {
     // 建站日期
     var startDate = new Date("2026-10-19T00:08:00");
     var currentDate = new Date();
-    
+
+    var detail = document.getElementById("run-time-detail");
+    if (!detail) return;
+
     if (currentDate < startDate) {
-      document.getElementById("run-time-detail").textContent = "0 天";
+      detail.textContent = "0 天";
       return;
     }
 
@@ -37,8 +54,8 @@
     if (months > 0) result += months + " 个月 ";
     result += days + " 天";
 
-    document.getElementById("run-time-detail").textContent = result;
-  });
+    detail.textContent = result;
+  })();
 </script>
 {{- end }}
 
