@@ -1,17 +1,54 @@
-<div class="comments">    
-    <script src="https://giscus.app/client.js"
-            data-repo="InitalUpotia/blog-comments"
-            data-repo-id="R_kgDOVDYM8Q"
-            data-category="Announcements"
-            data-category-id="DIC_kwDOVDYM8c4DHePT"
-            data-mapping="pathname"
-            data-strict="1"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="preferred_color_scheme"
-            data-lang="zh-CN"
-            crossorigin="anonymous"
-            async>
-    </script>
+<div class="comments">
+  <div class="giscus"></div>
 </div>
+
+<script>
+  (function () {
+    function giscusTheme() {
+      // PaperMod 的深色是 html[data-theme="dark"]
+      // 想更贴近 PaperMod 的深灰配色，可以把 'dark' 换成 'dark_dimmed'
+      return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+    }
+
+    // 1. 动态创建 client.js，避免 iframe 先以错误主题渲染再切换
+    var s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-repo', 'InitalUpotia/blog-comments');
+    s.setAttribute('data-repo-id', 'R_kgDOVDYM8Q');
+    s.setAttribute('data-category', 'Announcements');
+    s.setAttribute('data-category-id', 'DIC_kwDOVDYM8c4DHePT');
+    s.setAttribute('data-mapping', 'pathname');
+    s.setAttribute('data-strict', '1');
+    s.setAttribute('data-reactions-enabled', '1');
+    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-input-position', 'bottom');
+    s.setAttribute('data-theme', giscusTheme());   // 👈 初始主题
+    s.setAttribute('data-lang', 'lazy');
+    document.querySelector('.comments').appendChild(s);
+
+    // 2. 页面切换主题时，通知 iframe 换肤
+    function syncGiscus() {
+      var iframe = document.querySelector('iframe.giscus-frame');
+      if (!iframe) return;
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme() } } },
+        'https://giscus.app'
+      );
+    }
+
+    new MutationObserver(syncGiscus).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // 3. iframe 是异步插入的，出现后再补一次，保证初始主题正确
+    new MutationObserver(function (_, observer) {
+      if (document.querySelector('iframe.giscus-frame')) {
+        observer.disconnect();
+        syncGiscus();
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+  })();
+</script>

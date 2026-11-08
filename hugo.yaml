@@ -5,6 +5,9 @@ title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
 enableGitInfo: true
 
+pagination:
+  pagerSize: 5  # 设置每页显示 5 篇文章，可根据需要调整
+
 # 定义日期读取的优先级
 frontmatter:
   lastmod:
@@ -78,7 +81,7 @@ params:
 
 
   ShowReadingTime: true
-  ShowShareButtons: true
+  # ShowShareButtons: true
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
@@ -86,6 +89,7 @@ params:
   ShowWordCount: true
   ShowToc: true
   ShowRssButtonInSectionTermList: true
+  ShowPageNums: true   # 显示页码数字
 
   defaultTheme: auto
   UseHugoToc: true
@@ -96,7 +100,7 @@ params:
   hidemeta: false
   hideSummary: false
   tocopen: false
-  math: true
+  # math: true
 
 menu:
   main:

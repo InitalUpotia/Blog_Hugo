@@ -4,3 +4,40 @@
 
 <!-- Vercount 访问统计脚本 -->
 <script defer src="https://cn.vercount.one/js"></script>
+
+<!-- 随机背景图：同一标签页内保持不变，关闭浏览器后重新随机 -->
+<script>
+(function () {
+  var KEY = "blog-bg-url";
+  var cached = null;
+
+  try {
+    cached = sessionStorage.getItem(KEY);
+  } catch (e) { /* 隐私模式等场景，忽略存储错误 */ }
+
+  // 本标签页已经选过图：直接复用，不发任何请求
+  if (cached) {
+    document.documentElement.style.setProperty("--bg-image", "url('" + cached + "')");
+    return;
+  }
+
+  // 第一次访问：问一次接口要固定的图片地址
+  fetch("https://t.alcy.cc/ycy?json")
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.status);
+      return res.text();
+    })
+    .then(function (body) {
+      body = body.trim();
+      // 目前返回纯文本 URL；若以后改成 {"url":"..."} 也能兼容
+      var url = body.charAt(0) === "{" ? JSON.parse(body).url : body;
+
+      try { sessionStorage.setItem(KEY, url); } catch (e) {}
+      document.documentElement.style.setProperty("--bg-image", "url('" + url + "')");
+    })
+    .catch(function () {
+      // 接口挂了就退回直链，至少不会白屏（这种时候每次加载会变）
+      document.documentElement.style.setProperty("--bg-image", "url('https://t.alcy.cc/ycy')");
+    });
+})();
+</script>

@@ -16,7 +16,6 @@ html {
 }
 
 html, body {
-  overflow-x: hidden;
   max-width: 100%;
 }
 
@@ -75,12 +74,11 @@ html, body {
               max-height 0.25s ease;
 }
 
-/* 深色模式：半透明深色背景 */
-.dark .dropdown-content {
+/* 深色下拉菜单 */
+[data-theme="dark"] .dropdown-content {
   background-color: rgba(20, 20, 20, 0.7);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
-
 
 /* 下拉项 */
 .dropdown-content li {
@@ -260,4 +258,184 @@ figcaption {
     .column-info {
         padding: 16px;
     }
+}
+
+
+/* ============================================
+   随机二次元背景图设置
+   ============================================ */
+
+/* 使用 body::before 创建一个绝对定位的固定背景层 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* 放在所有内容的最底层 */
+  
+  /* 背景图设置 */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  
+  /* 默认给个渐变底色，JS 加载图片前不会白屏 */
+  background-color: var(--theme);
+
+  background-image: var(--bg-image, none); 
+}
+
+/* ============================================
+   导航栏毛玻璃效果 (Glassmorphism) 强化版
+   ============================================ */
+
+/* 浅色模式 */
+.header {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  z-index: 1000;
+}
+
+/* 暗黑模式：兼容多种类名写法，并大幅降低不透明度 */
+[data-theme="dark"] .header {
+  /* 使用更透明的黑色，让背后的图透出来 */
+  background: rgba(10, 10, 10, 0.5) !important;
+  /* 加一点极细的浅色边框，在暗黑环境下增加层次感 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 确保内部容器完全透明 */
+.nav {
+  background: transparent !important;
+}
+
+/* ==========================================================
+   半透明毛玻璃：文章卡片 & 文章详情
+   注意：PaperMod 深色模式 = html[data-theme="dark"]
+   ========================================================== */
+
+/* ---- 玻璃参数：浅色（与下拉菜单一致）---- */
+:root {
+  --glass-bg:           rgba(255, 255, 255, 0.4);
+  --glass-bg-hover:     rgba(255, 255, 255, 0.52);
+  --glass-border:       var(--border);
+  --glass-shadow:       0 4px 12px rgba(0, 0, 0, 0.08);
+  --glass-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.14);
+  --glass-blur:         4px;
+}
+
+/* ---- 玻璃参数：深色（与下拉菜单一致）---- */
+:root[data-theme="dark"] {
+  --glass-bg:           rgba(20, 20, 20, 0.7);
+  --glass-bg-hover:     rgba(28, 28, 28, 0.8);
+  --glass-border:       var(--border);
+  --glass-shadow:       0 4px 12px rgba(0, 0, 0, 0.4);
+  --glass-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.55);
+  --glass-blur:         4px;
+}
+
+/* ---- 文章卡片 + 文章容器 ---- */
+.post-entry,
+.first-entry,
+.column-card,
+.post-single {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  transition: background-color 0.3s ease,
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              transform 0.3s ease;
+}
+
+/* 悬停时更实一点，避免文字发虚 */
+.post-entry:hover,
+.post-entry:focus-within,
+.column-card:hover {
+  background: var(--glass-bg-hover) !important;
+  box-shadow: var(--glass-shadow-hover) !important;
+  transform: translateY(-2px);
+}
+
+/* ---- 文章内部的小块：目录 / 标签 / 上下篇 / 分享 ---- */
+details.toc,
+.searchResults li,
+.post-tags a,
+.paginav,
+.share-buttons {
+  background: var(--glass-bg) !important;
+  border-color: var(--glass-border) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.post-tags a:hover,
+.paginav a:hover {
+  background: var(--glass-bg-hover) !important;
+}
+
+/* 目录的摘要行保持透明，不要出现一条实色横带 */
+details.toc summary {
+  background: transparent;
+}
+
+/* ---- 文章详情页内边距（保留原有设置）---- */
+.post-single {
+  padding: 2.5rem 3rem !important;
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .post-single {
+    padding: 1.5rem 1.25rem !important;
+    margin-top: 1rem !important;
+  }
+
+  /* 移动端降低模糊半径，减少 GPU 压力 */
+  .post-entry,
+  .first-entry,
+  .column-card,
+  .post-single {
+    --glass-blur: 2px;
+  }
+}
+
+/* ---- 不支持 backdrop-filter 时回退为接近不透明 ---- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .post-entry,
+  .first-entry,
+  .column-card,
+  .post-single {
+    background: var(--entry) !important;
+  }
+}
+
+/* 参数 */
+:root {
+  --bg-mask: rgba(255, 255, 255, 0.4);
+}
+
+:root[data-theme="dark"] {
+  --bg-mask: rgba(0, 0, 0, 0.6);
+}
+
+/* 蒙版层 */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--bg-mask);
+}
+
+/* 深色不再用 brightness，只保留图片本身 */
+[data-theme="dark"] body::before {
+  background-image: var(--bg-image, none);
+  filter: none;
 }

@@ -1,8 +1,44 @@
 {{- if not (.Param "hideFooter") }}
 <footer class="footer">
     <div>
-        总访客数 <span id="vercount_value_site_uv"></span> 人 <br>
-        总访问量 <span id="vercount_value_site_pv"></span> 次
+        总访客数 <span id="vercount_value_site_uv"></span> 人   总访问量 <span id="vercount_value_site_pv"></span> 次 <br>
+        本站已运行 <span id="run-time-detail">计算中...</span>
     </div>
 </footer>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // 建站日期
+    var startDate = new Date("2026-10-19T00:08:00");
+    var currentDate = new Date();
+    
+    if (currentDate < startDate) {
+      document.getElementById("run-time-detail").textContent = "0 天";
+      return;
+    }
+
+    var years = currentDate.getFullYear() - startDate.getFullYear();
+    var months = currentDate.getMonth() - startDate.getMonth();
+    var days = currentDate.getDate() - startDate.getDate();
+
+    if (days < 0) {
+      months--;
+      var lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+      days += lastMonth.getDate();
+    }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    var result = "";
+    if (years > 0) result += years + " 年 ";
+    if (months > 0) result += months + " 个月 ";
+    result += days + " 天";
+
+    document.getElementById("run-time-detail").textContent = result;
+  });
+</script>
 {{- end }}
+

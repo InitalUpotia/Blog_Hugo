@@ -4,6 +4,7 @@ draft : false
 title : 'Hello World'
 tags: ["测试"]
 author: "iNITAL"
+math: true
 cover:
     image: "image-for-test/test1.webp"
     alt: "A sample cover image"
@@ -52,7 +53,7 @@ $$
 E = mc^2
 $$
 
-行内公式经过测试似乎不行
+~~行内公式经过测试似乎不行~~ 更新：2026-11-08 支持行内公式：$A ^ 2 = B ^ 2 + C ^ 2$
 
 ## Mermaid图表
 
