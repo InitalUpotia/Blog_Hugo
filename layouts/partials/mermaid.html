@@ -1,0 +1,92 @@
+<script>
+(function () {
+  var nodes = document.querySelectorAll('.mermaid');
+  if (!nodes.length) return;
+
+  var CDN = 'https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.min.js';
+  var loading = false;
+  var rendering = false;
+  var pending = false;
+  var seq = 0;
+
+  function currentTheme() {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
+  }
+
+  async function renderAll() {
+    if (!window.mermaid) return;
+
+    if (rendering) {
+      pending = true;
+      return;
+    }
+    rendering = true;
+
+    var list = Array.prototype.slice.call(document.querySelectorAll('.mermaid'));
+    list.forEach(function (el) {
+      // 第一次渲染前保存原始源码，切换主题时要用
+      if (!el.dataset.source) {
+        el.dataset.source = el.textContent;
+      }
+    });
+
+    window.mermaid.initialize({
+      startOnLoad: false,
+      theme: currentTheme(),
+      securityLevel: 'strict',
+      fontFamily: 'Tahoma, Verdana, sans-serif'
+    });
+
+    for (var i = 0; i < list.length; i++) {
+      var el = list[i];
+      try {
+        var result = await window.mermaid.render(
+          'mermaid-' + (++seq),
+          el.dataset.source
+        );
+        el.innerHTML = result.svg;
+      } catch (e) {
+        console.error('Mermaid render failed:', e);
+      }
+    }
+
+    rendering = false;
+    if (pending) {
+      pending = false;
+      renderAll();
+    }
+  }
+
+  function load() {
+    if (window.mermaid) {
+      renderAll();
+      return;
+    }
+    if (loading) return;
+    loading = true;
+
+    var s = document.createElement('script');
+    s.src = CDN;
+    s.async = true;
+    s.onload = function () {
+      loading = false;
+      renderAll();
+    };
+    s.onerror = function () {
+      loading = false;
+      console.error('Mermaid 加载失败，请检查 CDN 是否可达');
+    };
+    document.head.appendChild(s);
+  }
+
+  load();
+
+  // 站点切换深浅色时重新渲染
+  new MutationObserver(function () {
+    renderAll();
+  }).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+})();
+</script>

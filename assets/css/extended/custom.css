@@ -289,23 +289,67 @@ body::before {
 
 /* 浅色模式 */
 .header {
-  background: rgba(255, 255, 255, 0.6) !important;
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  position: relative;      /* 关键：static 下 z-index 无效 */
   z-index: 1000;
+  isolation: isolate;
+
+  background: rgba(255, 255, 255, 0.6) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
-/* 暗黑模式：兼容多种类名写法，并大幅降低不透明度 */
+/* 暗黑模式 */
 [data-theme="dark"] .header {
-  /* 使用更透明的黑色，让背后的图透出来 */
   background: rgba(10, 10, 10, 0.5) !important;
-  /* 加一点极细的浅色边框，在暗黑环境下增加层次感 */
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-/* 确保内部容器完全透明 */
-.nav {
+/* 移动端：降低模糊半径，提高底色不透明度 */
+@media screen and (max-width: 768px) {
+  .header {
+    background: rgba(255, 255, 255, 0.72) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(160%);
+    backdrop-filter: blur(8px) saturate(160%);
+    transform: translateZ(0); /* 部分移动 WebKit 需要强制合成层，无效可删 */
+  }
+
+  [data-theme="dark"] .header {
+    background: rgba(10, 10, 10, 0.68) !important;
+  }
+
+  /* 移动端菜单换行，避免撑出页面横向滚动 */
+  .menu {
+    flex-wrap: wrap;
+    white-space: normal;
+    column-gap: 6px;
+    row-gap: 2px;
+  }
+
+  .menu a {
+    font-size: 15px;
+  }
+
+  /* 下拉菜单靠右展开，避免隐藏状态也超出右边界 */
+  .dropdown-content {
+    left: auto;
+    right: 0;
+  }
+}
+
+/* 完全不支持 backdrop-filter 的浏览器/WebView：退回接近不透明 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header {
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  [data-theme="dark"] .header {
+    background: rgba(10, 10, 10, 0.95) !important;
+  }
+}
+
+/* 内部容器透明。注意类名是 header-nav，不是 nav */
+.header-nav {
   background: transparent !important;
 }
 
@@ -505,4 +549,24 @@ body::after {
 
 .waline-wrap {
   margin-top: 2rem;
+}
+
+/* ============================================
+   Mermaid 图表
+   ============================================ */
+.post-content pre.mermaid {
+  background: transparent !important;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  text-align: center;
+  white-space: normal;
+  font-family: inherit;
+}
+
+.post-content pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
 }
