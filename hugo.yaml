@@ -69,7 +69,7 @@ params:
       - [更多……](/about/)"
 
   label:
-    text: "Home"                # 鼠标悬停时显示的文字
+    text: "首页"                # 鼠标悬停时显示的文字
     icon: "/logo.jpg"    # 图片路径，以 / 开头
     iconHeight: 35              # 图标高度（像素），按需调整
   socialIcons:
