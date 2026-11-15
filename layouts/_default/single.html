@@ -25,9 +25,11 @@
       {{- partial "translation_list.html" . -}}
       {{- partial "edit_post.html" . -}}
       {{- partial "post_canonical.html" . -}}
+      {{- if eq .Section "posts" }}
       <div class="meta-item">
-        阅读量 <span id="vercount_value_page_pv"></span> 次
+        阅读量 <span class="waline-pageview-count">—</span> 次
       </div>
+      {{- end }}
     </div>
     {{- end }}
   </header>
@@ -66,5 +68,19 @@
   {{- partial "comments.html" . }}
   {{- end }}
 </article>
+
+{{- if eq .Section "posts" }}
+<script type="module">
+  import { pageviewCount } from 'https://unpkg.com/@waline/client@3.16.2/dist/pageview.js';
+
+  if (document.querySelector('.waline-pageview-count')) {
+    pageviewCount({
+      serverURL: 'https://waline.inital.top',
+      selector: '.waline-pageview-count',
+      lang: 'zh-CN'
+    });
+  }
+</script>
+{{- end }}
 
 {{- end }}{{/* end main */}}

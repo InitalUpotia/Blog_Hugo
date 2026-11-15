@@ -3,6 +3,10 @@
 {{ end }}
 
 <!-- Vercount 访问统计脚本 -->
+<script>
+  // Vercount 的缓存是全站单 key，接口失败会把上一页的数字显示到当前页
+  try { localStorage.removeItem('visitorCountData'); } catch (e) {}
+</script>
 <script defer src="https://cn.vercount.one/js"></script>
 
 <!-- 随机背景图：同一标签页内保持不变，关闭浏览器后重新随机 -->
