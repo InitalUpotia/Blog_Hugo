@@ -1,0 +1,59 @@
+<div id="waline" class="waline-wrap">
+  <div class="waline-loading">评论加载中…</div>
+</div>
+
+<script type="module">
+(function () {
+  var el = document.getElementById('waline');
+  if (!el) return;
+
+  var CSS_URL = 'https://unpkg.com/@waline/client@3.16.2/dist/waline.css';
+  var JS_URL = 'https://unpkg.com/@waline/client@3.16.2/dist/waline.js';
+  var started = false;
+
+  function load() {
+    if (started) return;
+    started = true;
+
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = CSS_URL;
+    document.head.appendChild(link);
+
+    import(JS_URL).then(function (mod) {
+      el.innerHTML = '';
+      mod.init({
+        el: '#waline',
+        serverURL: 'https://waline.inital.top',
+        lang: 'zh-CN',
+        dark: 'html[data-theme="dark"]',
+
+        login: 'enable',
+        meta: ['nick', 'mail', 'link'],
+        requiredMeta: ['nick'],
+
+        reaction: false,
+        imageUploader: false,
+        pageview: false,   // 阅读量由 pageview.js 负责，避免重复
+        comment: false
+      });
+    }).catch(function (e) {
+      console.error('Waline load failed', e);
+      el.textContent = '评论加载失败，请稍后重试。';
+    });
+  }
+
+  // 距离评论区 600px 时开始加载
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries, obs) {
+      if (entries.some(function (e) { return e.isIntersecting; })) {
+        obs.disconnect();
+        load();
+      }
+    }, { rootMargin: '600px' });
+    io.observe(el);
+  } else {
+    load();
+  }
+})();
+</script>
