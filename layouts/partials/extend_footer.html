@@ -6,7 +6,7 @@
 */}}
 <template id="footer-extra">
     <div class="footer-extra">
-        总访客数 <span id="vercount_value_site_uv"></span> 人 · 总访问量 <span id="vercount_value_site_pv"></span> 次<br>
+        总访客数 <span id="site-uv">—</span> 人 · 总访问量 <span id="site-pv">—</span> 次<br>
         本站已运行 <span id="run-time-detail">计算中...</span>
     </div>
 </template>
@@ -56,6 +56,34 @@
 
     detail.textContent = result;
   })();
+</script>
+
+<script>
+(function () {
+  // 只在正式域名统计，本地/预览不污染线上数据
+  if (location.hostname !== 'blog.inital.top') return;
+
+  var pv = document.getElementById('site-pv');
+  var uv = document.getElementById('site-uv');
+  if (!pv && !uv) return;
+
+  fetch('https://stats.inital.top/api/hit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path: location.pathname })
+  })
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (d) {
+      if (pv) pv.textContent = d.site_pv;
+      if (uv) uv.textContent = d.site_uv;
+    })
+    .catch(function () {
+      // 失败保持 —，不显示旧数字
+    });
+})();
 </script>
 {{- end }}
 
