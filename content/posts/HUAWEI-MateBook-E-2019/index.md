@@ -158,4 +158,4 @@ ARM 架构下的跑分还算是有一台 2019 年机器的样子。理论上来�
 
 在克服种种驱动困难，修改种种困难之后，我们的 Matebook E 2019 大小姐能否焕然一新，大杀四方？
 
-敬请期待 iNITAL 的垃圾站：“大强兼”时代的受益者——HUAWEI MateBook E 2019（下）~
+敬请期待 ~~iNITAL 的垃圾站：“大强兼”时代的受益者——HUAWEI MateBook E 2019（下）~~[iNITAL 的垃圾站：过去的想法实现了，然后呢？——HUAWEI MateBook E 2019（中）](blog.inital.top/posts/huawei-matebook-e-2019-linux/)
