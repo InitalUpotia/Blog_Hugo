@@ -471,12 +471,23 @@ details.toc summary {
 }
 
 /* ---- 不支持 backdrop-filter 时回退为接近不透明 ---- */
+/* ---- 不支持 backdrop-filter 时回退为不透明 ---- */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .post-entry,
   .first-entry,
   .column-card,
   .post-single,
-  .footer {
+  .footer,
+  .post-entry:hover,
+  .post-entry:focus-within,
+  .column-card:hover,
+  details.toc,
+  .searchResults li,
+  .post-tags a,
+  .paginav,
+  .share-buttons,
+  .post-tags a:hover,
+  .paginav a:hover {
     background: var(--entry) !important;
   }
 }
