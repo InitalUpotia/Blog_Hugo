@@ -101,20 +101,21 @@
 <footer class="page-footer">
   <nav class="pagination">
     {{- if $paginator.HasPrev }}
-    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
-      «&nbsp;{{ i18n "prev_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
-      {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
-      {{- end }}
-    </a>
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">«&nbsp;{{ i18n "prev_page" }}</a>
+    {{- else if gt $paginator.TotalPages 2 }}
+    <a class="prev jump" href="{{ (index $paginator.Pagers (sub $paginator.TotalPages 1)).URL | absURL }}">回到尾页&nbsp;»</a>
     {{- end }}
+
+    {{- if (.Param "ShowPageNums") }}
+    <span class="page-info">
+      第&nbsp;{{ $paginator.PageNumber }}&nbsp;页&nbsp;/&nbsp;共&nbsp;{{ $paginator.TotalPages }}&nbsp;页
+    </span>
+    {{- end }}
+
     {{- if $paginator.HasNext }}
-    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
-      {{- i18n "next_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
-      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
-      {{- end }}&nbsp;»
-    </a>
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">{{ i18n "next_page" }}&nbsp;»</a>
+    {{- else if gt $paginator.TotalPages 2 }}
+    <a class="next jump" href="{{ (index $paginator.Pagers 0).URL | absURL }}">«&nbsp;回到第一页</a>
     {{- end }}
   </nav>
 </footer>

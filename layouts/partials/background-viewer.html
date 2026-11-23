@@ -1,0 +1,75 @@
+<div id="bg-viewer" class="bg-viewer" role="dialog" aria-modal="true"
+     aria-label="背景图片，点击任意处或按 Esc 返回" aria-hidden="true" tabindex="-1">
+  <div class="bg-viewer-image" role="img" aria-label="当前背景图片"></div>
+  <div class="bg-viewer-hint" aria-hidden="true">点击任意处返回</div>
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('bg-view-toggle');
+  var viewer = document.getElementById('bg-viewer');
+  if (!btn || !viewer) return;
+
+  var hint = viewer.querySelector('.bg-viewer-hint');
+
+  function hasBg() {
+    var value = getComputedStyle(document.documentElement)
+      .getPropertyValue('--bg-image')
+      .trim();
+    return value && value !== 'none';
+  }
+
+  function updateButton() {
+    var has = hasBg();
+    btn.hidden = !has;
+    btn.disabled = !has;
+  }
+
+  function isOpen() {
+    return viewer.classList.contains('is-open');
+  }
+
+  function open() {
+    if (!hasBg() || isOpen()) return;
+
+    viewer.classList.add('is-open');
+    viewer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('bg-viewer-open');
+    btn.setAttribute('aria-expanded', 'true');
+    viewer.focus();
+
+    // 让提示动画每次打开都重播
+    if (hint) {
+      hint.style.animation = 'none';
+      void hint.offsetWidth;
+      hint.style.animation = '';
+    }
+  }
+
+  function close() {
+    if (!isOpen()) return;
+
+    viewer.classList.remove('is-open');
+    viewer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('bg-viewer-open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.focus();
+  }
+
+  btn.addEventListener('click', open);
+  viewer.addEventListener('click', close);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isOpen()) close();
+  });
+
+  updateButton();
+
+  new MutationObserver(updateButton).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['style']
+  });
+
+  window.addEventListener('load', updateButton);
+})();
+</script>

@@ -570,3 +570,245 @@ body::after {
   max-width: 100%;
   height: auto;
 }
+
+/* ============================================
+   分页：上一页 / 第 X 页 / 下一页
+   ============================================ */
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination .prev {
+  justify-self: start;
+}
+
+.pagination .next {
+  justify-self: end;
+  margin-inline-start: 0;
+}
+
+.pagination .page-info {
+  justify-self: center;
+  color: var(--secondary);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .pagination {
+    gap: 8px;
+  }
+
+  .pagination a {
+    padding: 0 12px;
+  }
+
+  .pagination .page-info {
+    font-size: 13px;
+  }
+}
+
+/* 首尾跳转链接：弱化一点，和上一页/下一页区分 */
+.pagination .jump {
+  background: transparent;
+  color: var(--secondary);
+  border: 1px solid var(--border);
+  line-height: 34px;
+}
+
+.pagination .jump:hover {
+  color: var(--primary);
+  border-color: var(--tertiary);
+}
+
+/* ============================================
+   分页容器：比文章卡片更通透的毛玻璃
+   ============================================ */
+.page-footer {
+  --pager-bg: rgba(255, 255, 255, 0.28);
+  --pager-blur: 2px;
+  --pager-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+
+  background: var(--pager-bg) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--pager-shadow);
+
+  -webkit-backdrop-filter: blur(var(--pager-blur)) saturate(150%);
+  backdrop-filter: blur(var(--pager-blur)) saturate(150%);
+}
+
+[data-theme="dark"] .page-footer {
+  --pager-bg: rgba(20, 20, 20, 0.45);
+  --pager-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  .page-footer {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .page-footer {
+    background: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  [data-theme="dark"] .page-footer {
+    background: rgba(10, 10, 10, 0.9) !important;
+  }
+}
+
+/* ============================================
+   欣赏背景图：按钮 + 全屏查看
+   ============================================ */
+
+.bg-view-toggle {
+  padding: 0 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  line-height: inherit;
+}
+
+.bg-view-toggle:hover {
+  color: var(--secondary);
+}
+
+.bg-view-toggle[hidden] {
+  display: none;
+}
+
+.bg-view-toggle:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* 全屏查看层 */
+.bg-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.94);
+  cursor: zoom-out;
+  overscroll-behavior: contain;
+  touch-action: none;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.bg-viewer.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.bg-viewer-image {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+
+  /* 老浏览器先给一个固定留白，再用 max() 叠加刘海安全区 */
+  padding: 0.75rem;
+  padding:
+    max(0.75rem, env(safe-area-inset-top, 0px))
+    max(0.75rem, env(safe-area-inset-right, 0px))
+    max(0.75rem, env(safe-area-inset-bottom, 0px))
+    max(0.75rem, env(safe-area-inset-left, 0px));
+
+  background-image: var(--bg-image, none);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-origin: content-box;
+  background-clip: content-box;
+
+  transform: scale(0.985);
+  transition: transform 0.25s ease;
+}
+
+.bg-viewer.is-open .bg-viewer-image {
+  transform: scale(1);
+}
+
+.bg-viewer-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+
+  animation: bg-viewer-hint-fade 3s ease forwards;
+  writing-mode: horizontal-tb;
+}
+
+/* 触屏横屏：右侧竖排 */
+@media (orientation: landscape) and (pointer: coarse) {
+  .bg-viewer-hint {
+    left: auto;
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 0.08em;
+  }
+}
+
+@keyframes bg-viewer-hint-fade {
+  0%, 55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+body.bg-viewer-open {
+  overflow: hidden;
+}
+
+/* 减少动态效果的系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  .bg-viewer,
+  .bg-viewer-image {
+    transition: none;
+  }
+
+  .bg-viewer-image {
+    transform: none;
+  }
+
+  .bg-viewer-hint {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.bg-viewer.is-open .bg-viewer-image {
+  transform: scale(1);
+}
