@@ -27,23 +27,43 @@
   {{- with .Get 3 }}{{ $title = . }}{{ end }}
 {{- end }}
 {{- if not $height }}{{ $height = cond (eq $type "song") 66 430 }}{{ end }}
+{{- $typeId := cond (isset $types $type) (index $types $type) 0 }}
 {{- $src := printf
   "https://music.163.com/outchain/player?type=%d&id=%d&auto=%d&height=%d"
-  (cond (isset $types $type) (index $types $type) 0)
-  $id
-  $auto
-  $height
+  $typeId $id $auto $height
+}}
+{{- $mobileSrc := printf
+  "https://music.163.com/m/outchain/player?type=%d&id=%d&auto=%d&height=%d"
+  $typeId $id $auto $height
 }}
 {{- if not $title }}{{ $title = printf "%s's %d" $type $id }}{{- end }}
+{{- $linkType := cond (eq $type "song") "song" (cond (eq $type "album") "album" "playlist") }}
 <iframe
   class="netease-cloud-music-frame"
   title="{{ $title }}"
+  data-src-desktop="{{ $src }}"
+  data-src-mobile="{{ $mobileSrc }}"
   frameborder="no"
   border="0"
   marginwidth="0"
   marginheight="0"
   width="{{ $width }}"
   height="{{ add $height 20 }}"
-  loading="lazy"
-  src="{{ $src }}">
+  loading="lazy">
 </iframe>
+<script>
+(function () {
+  var frame = document.currentScript.previousElementSibling;
+  if (!frame || frame.tagName !== 'IFRAME') return;
+
+  var ua = navigator.userAgent || '';
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+  frame.src = isMobile
+    ? frame.getAttribute('data-src-mobile')
+    : frame.getAttribute('data-src-desktop');
+})();
+</script>
+<noscript>
+  <a href="https://music.163.com/#/{{ $linkType }}?id={{ $id }}"
+     target="_blank" rel="noopener">在网易云音乐打开</a>
+</noscript>
