@@ -812,3 +812,17 @@ body.bg-viewer-open {
 .bg-viewer.is-open .bg-viewer-image {
   transform: scale(1);
 }
+
+/* MyPal/Pale Moon 等不支持 backdrop-filter 的浏览器：
+   下拉菜单也退回接近不透明的底色，避免只有它看起来像玻璃 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .dropdown-content {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  [data-theme="dark"] .dropdown-content {
+    background-color: rgba(10, 10, 10, 0.95) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+}
