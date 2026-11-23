@@ -470,27 +470,6 @@ details.toc summary {
   }
 }
 
-/* ---- 不支持 backdrop-filter 时回退为接近不透明 ---- */
-/* ---- 不支持 backdrop-filter 时回退为不透明 ---- */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .post-entry,
-  .first-entry,
-  .column-card,
-  .post-single,
-  .footer,
-  .post-entry:hover,
-  .post-entry:focus-within,
-  .column-card:hover,
-  details.toc,
-  .searchResults li,
-  .post-tags a,
-  .paginav,
-  .share-buttons,
-  .post-tags a:hover,
-  .paginav a:hover {
-    background: var(--entry) !important;
-  }
-}
 
 /* 参数 */
 :root {
@@ -707,6 +686,11 @@ body::after {
 /* 全屏查看层 */
 .bg-viewer {
   position: fixed;
+  /* 老浏览器不支持 inset，用四边偏移兜底 */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   z-index: 2000;
   display: flex;
@@ -731,6 +715,11 @@ body::after {
 
 .bg-viewer-image {
   position: absolute;
+  /* 老浏览器不支持 inset，用四边偏移兜底 */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   box-sizing: border-box;
 
@@ -760,6 +749,8 @@ body::after {
 .bg-viewer-hint {
   position: absolute;
   left: 50%;
+  /* 老浏览器不支持 env()，先给固定值；现代浏览器再叠加安全区 */
+  bottom: 1.5rem;
   bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
 
@@ -779,6 +770,8 @@ body::after {
 @media (orientation: landscape) and (pointer: coarse) {
   .bg-viewer-hint {
     left: auto;
+    /* 老浏览器不支持 env()，先给固定值 */
+    right: 1rem;
     right: calc(1rem + env(safe-area-inset-right, 0px));
     top: 50%;
     bottom: auto;
@@ -824,16 +817,57 @@ body.bg-viewer-open {
   transform: scale(1);
 }
 
-/* MyPal/Pale Moon 等不支持 backdrop-filter 的浏览器：
-   下拉菜单也退回接近不透明的底色，避免只有它看起来像玻璃 */
+/* ==========================================================
+   不支持 backdrop-filter 的浏览器：全局半透明玻璃回退
+   只在不支持时生效，现代浏览器不受影响
+   ========================================================== */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .dropdown-content {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  :root {
+    --fb-glass: rgba(255, 255, 255, 0.58);
+    --fb-glass-hover: rgba(255, 255, 255, 0.70);
+    --fb-glass-strong: rgba(255, 255, 255, 0.72);
   }
 
+  :root[data-theme="dark"] {
+    --fb-glass: rgba(20, 20, 20, 0.58);
+    --fb-glass-hover: rgba(30, 30, 30, 0.72);
+    --fb-glass-strong: rgba(20, 20, 20, 0.70);
+  }
+
+  /* 导航栏更实一点，保证菜单可读 */
+  .header,
+  [data-theme="dark"] .header {
+    background: var(--fb-glass-strong) !important;
+  }
+
+  /* 所有玻璃面板统一半透明 */
+  .post-entry,
+  .first-entry,
+  .column-card,
+  .post-single,
+  .footer,
+  .page-footer,
+  .dropdown-content,
+  details.toc,
+  .searchResults li,
+  .post-tags a,
+  .paginav,
+  .share-buttons {
+    background: var(--fb-glass) !important;
+  }
+
+  /* 覆盖旧回退里的深色实色规则 */
+  [data-theme="dark"] .page-footer,
   [data-theme="dark"] .dropdown-content {
-    background-color: rgba(10, 10, 10, 0.95) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    background: var(--fb-glass) !important;
+  }
+
+  /* hover 稍实一点，保留浮起反馈 */
+  .post-entry:hover,
+  .post-entry:focus-within,
+  .column-card:hover,
+  .post-tags a:hover,
+  .paginav a:hover {
+    background: var(--fb-glass-hover) !important;
   }
 }
