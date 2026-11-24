@@ -8,35 +8,133 @@
 <script>
 (function () {
   var KEY = "blog-bg-url";
-  var cached = null;
+  var requestId = 0;
 
+  function cssUrl(url) {
+    return "url('" + url.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "')";
+  }
+
+  function applyBackground(url) {
+    if (!url || !/^https?:\/\//i.test(url)) return false;
+
+    try { sessionStorage.setItem(KEY, url); } catch (e) {}
+    document.documentElement.style.setProperty("--bg-image", cssUrl(url));
+    return true;
+  }
+
+  function requestBackgroundUrl() {
+    return fetch("https://t.alcy.cc/ycy?json", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.status);
+        return res.text();
+      })
+      .then(function (body) {
+        body = body.trim();
+        // 目前返回纯文本 URL；若以后改成 {"url":"..."} 也能兼容
+        return body.charAt(0) === "{" ? JSON.parse(body).url : body;
+      });
+  }
+
+  function changeBackground() {
+    var myId = ++requestId;
+
+    return requestBackgroundUrl().then(function (url) {
+      // 连续点击时只认最后一次请求，避免旧响应把新图覆盖
+      if (myId !== requestId) return null;
+      return applyBackground(url) ? url : null;
+    });
+  }
+
+  function transitionBackground(url) {
+    var reduced = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var current = getComputedStyle(document.documentElement)
+      .getPropertyValue("--bg-image")
+      .trim();
+
+    // 首次加载或用户减少动态效果时，直接切换
+    if (!current || current === "none" || reduced) {
+      return Promise.resolve(applyBackground(url) ? url : null);
+    }
+
+    return new Promise(function (resolve) {
+      var img = new Image();
+      var raf = window.requestAnimationFrame || function (fn) { return setTimeout(fn, 16); };
+
+      img.onload = function () {
+        var layer = document.createElement("div");
+        layer.className = "bg-transition-layer";
+        layer.setAttribute("aria-hidden", "true");
+        layer.style.backgroundImage = cssUrl(url);
+        document.body.appendChild(layer);
+
+        // 先确保初始 opacity: 0 生效，再加一帧开始淡入
+        void layer.offsetWidth;
+        raf(function () {
+          layer.style.opacity = "1";
+        });
+
+        var done = false;
+        var timer = null;
+
+        function finish() {
+          if (done) return;
+          done = true;
+          layer.removeEventListener("transitionend", onEnd);
+          if (timer) clearTimeout(timer);
+
+          // 先把底层换成新图，再移除覆盖层，避免闪回旧图
+          applyBackground(url);
+          raf(function () {
+            if (layer.parentNode) layer.parentNode.removeChild(layer);
+            resolve(url);
+          });
+        }
+
+        function onEnd(e) {
+          if (e.propertyName === "opacity") finish();
+        }
+
+        layer.addEventListener("transitionend", onEnd);
+        timer = setTimeout(finish, 700);
+      };
+
+      img.onerror = function () {
+        resolve(null);
+      };
+
+      img.src = url;
+    });
+  }
+
+  function changeBackgroundAnimated() {
+    var myId = ++requestId;
+
+    return requestBackgroundUrl().then(function (url) {
+      if (myId !== requestId) return null;
+      return transitionBackground(url);
+    });
+  }
+
+  window.changeBlogBackground = changeBackgroundAnimated;
+
+  var cached = null;
   try {
     cached = sessionStorage.getItem(KEY);
   } catch (e) { /* 隐私模式等场景，忽略存储错误 */ }
 
   // 本标签页已经选过图：直接复用，不发任何请求
   if (cached) {
-    document.documentElement.style.setProperty("--bg-image", "url('" + cached + "')");
+    applyBackground(cached);
     return;
   }
 
   // 第一次访问：问一次接口要固定的图片地址
-  fetch("https://t.alcy.cc/ycy?json")
-    .then(function (res) {
-      if (!res.ok) throw new Error(res.status);
-      return res.text();
-    })
-    .then(function (body) {
-      body = body.trim();
-      // 目前返回纯文本 URL；若以后改成 {"url":"..."} 也能兼容
-      var url = body.charAt(0) === "{" ? JSON.parse(body).url : body;
-
-      try { sessionStorage.setItem(KEY, url); } catch (e) {}
-      document.documentElement.style.setProperty("--bg-image", "url('" + url + "')");
-    })
-    .catch(function () {
-      // 接口挂了就退回直链，至少不会白屏（这种时候每次加载会变）
+  changeBackground().catch(function () {
+    // 接口挂了就退回直链，至少不会白屏；不覆盖已经换好的图
+    if (!document.documentElement.style.getPropertyValue("--bg-image")) {
       document.documentElement.style.setProperty("--bg-image", "url('https://t.alcy.cc/ycy')");
-    });
+    }
+  });
 })();
 </script>

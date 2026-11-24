@@ -11,6 +11,56 @@
   if (!btn || !viewer) return;
 
   var hint = viewer.querySelector('.bg-viewer-hint');
+  var changeBtn = document.getElementById('bg-change-toggle');
+  var changeTitleTimer = null;
+
+  if (changeBtn) {
+    if (typeof window.changeBlogBackground !== 'function' || typeof window.fetch !== 'function') {
+      changeBtn.hidden = true;
+    } else {
+      changeBtn.hidden = false;
+
+      changeBtn.addEventListener('click', function () {
+        if (changeBtn.disabled) return;
+
+        changeBtn.disabled = true;
+        changeBtn.classList.add('is-loading');
+        changeBtn.setAttribute('aria-busy', 'true');
+        changeBtn.title = '正在更换…';
+
+        if (changeTitleTimer) clearTimeout(changeTitleTimer);
+
+        function done(ok) {
+          changeBtn.disabled = false;
+          changeBtn.classList.remove('is-loading');
+          changeBtn.removeAttribute('aria-busy');
+          changeBtn.title = ok ? '更换图片' : '更换失败，请重试';
+
+          if (!ok) {
+            changeTitleTimer = setTimeout(function () {
+              changeBtn.title = '更换图片';
+            }, 2000);
+          }
+        }
+
+        var task = null;
+        try {
+          task = window.changeBlogBackground();
+        } catch (e) {}
+
+        if (!task || typeof task.then !== 'function') {
+          done(false);
+          return;
+        }
+
+        task.then(function (url) {
+          done(!!url);
+        }, function () {
+          done(false);
+        });
+      });
+    }
+  }
 
   function hasBg() {
     var value = getComputedStyle(document.documentElement)
