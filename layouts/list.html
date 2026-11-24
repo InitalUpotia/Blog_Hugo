@@ -39,11 +39,21 @@
 </div>
 {{- end }}
 
+{{- if or (eq .Section "posts") .Params.sortBy }}
+{{- partial "sort-control.html" . }}
+{{- end }}
+
 {{- $pages := union .RegularPages .Sections }}
 
 {{- if .IsHome }}
 {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
 {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
+{{- else if .Params.sortBy }}
+{{- $pages = where site.RegularPages "Section" "posts" }}
+{{- $pages = sort $pages .Params.sortBy (.Params.sortOrder | default "desc") }}
+{{- else if eq .Section "posts" }}
+{{- $pages = where site.RegularPages "Section" "posts" }}
+{{- $pages = sort $pages "Date" "desc" }}
 {{- end }}
 
 {{- $paginator := .Paginate $pages }}

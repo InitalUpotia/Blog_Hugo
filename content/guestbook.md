@@ -1,5 +1,5 @@
 ---
-title: "留言板"
+title: "GuestBook"
 layout: "guestbook"
 comments: true
 ---

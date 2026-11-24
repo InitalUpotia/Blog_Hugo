@@ -1,6 +1,7 @@
 {{- define "main" }}
 
-<article class="post-single">
+{{- $tocSidebar := and (eq .Section "posts") (.Param "ShowToc") (gt (len (findRE `<a ` .TableOfContents)) 1) -}}
+<article class="post-single{{ if $tocSidebar }} has-toc-sidebar{{ end }}">
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
     <h1 class="post-title entry-hint-parent">
@@ -68,6 +69,10 @@
   {{- partial "comments.html" . }}
   {{- end }}
 </article>
+
+{{- if $tocSidebar }}
+{{- partial "toc-sidebar.html" . }}
+{{- end }}
 
 {{- if eq .Section "posts" }}
 <script type="module">

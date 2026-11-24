@@ -1043,3 +1043,300 @@ body.bg-viewer-open {
     background: var(--fb-glass-hover) !important;
   }
 }
+
+/* ============================================
+   文章列表：排序工具栏 + 玻璃菜单
+   ============================================ */
+.list-sort {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 0 0.9rem;
+  font-size: 14px;
+  color: var(--secondary);
+}
+
+.list-sort-label {
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+.sort-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.sort-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  max-width: calc(100vw - 96px);
+  padding: 6px 12px;
+  font: inherit;
+  color: var(--primary);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+
+  -webkit-backdrop-filter: blur(6px) saturate(150%);
+  backdrop-filter: blur(6px) saturate(150%);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.sort-menu-toggle > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sort-menu-toggle:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--tertiary);
+}
+
+.sort-menu-toggle:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.sort-menu-arrow {
+  margin-left: 0.35em;
+  font-size: 0.6em;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.sort-menu.is-open .sort-menu-arrow {
+  transform: rotate(180deg);
+}
+
+/* 和“另我空间”下拉菜单同一套玻璃参数 */
+.sort-menu-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 1000;
+  min-width: 190px;
+  max-width: calc(100vw - 32px);
+  padding: 4px;
+
+  background-color: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease,
+              transform 0.2s ease,
+              visibility 0.2s;
+}
+
+[data-theme="dark"] .sort-menu-panel {
+  background-color: rgba(20, 20, 20, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.sort-menu.is-open .sort-menu-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sort-menu-panel a {
+  display: block;
+  padding: 7px 10px;
+  color: var(--primary);
+  font-size: 14px;
+  line-height: 1.4;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: calc(var(--radius) - 2px);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sort-menu-panel a:hover,
+.sort-menu-panel a:focus-visible {
+  background: var(--glass-bg-hover);
+  color: var(--primary);
+  outline: none;
+}
+
+.sort-menu-panel a[aria-current="page"] {
+  color: var(--secondary);
+  font-weight: 500;
+}
+
+.list-sort-links {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .list-sort {
+    font-size: 13px;
+  }
+
+  .sort-menu-toggle {
+    max-width: calc(100vw - 72px);
+    padding: 6px 10px;
+  }
+
+  .sort-menu-panel {
+    min-width: 170px;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sort-menu-toggle,
+  .sort-menu-panel {
+    background: var(--fb-glass) !important;
+  }
+}
+
+/* ============================================
+   桌面端文章大纲侧栏
+   ============================================ */
+.toc-sidebar {
+  display: none;
+  position: fixed;
+  top: 44%; /* 中靠上，略高于垂直中心 */
+  transform: translateY(-50%);
+  left: calc(50% - 580px);
+  z-index: 100;
+  width: 200px;
+  /* 视口变宽时向左扩展，右侧始终和正文保持约 20px 间距 */
+  left: calc(50% - 380px - clamp(180px, calc(50vw - 400px), 300px));
+  width: clamp(180px, calc(50vw - 400px), 300px);
+  /* 留出顶部导航和上下呼吸空间 */
+  max-height: calc(90vh - var(--header-height) - 5rem);
+  box-sizing: border-box;
+  padding: 14px 12px;
+
+  background: rgba(255, 255, 255, 0.30);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  backdrop-filter: blur(8px) saturate(160%);
+  overflow: hidden;
+}
+
+[data-theme="dark"] .toc-sidebar {
+  background: rgba(20, 20, 20, 0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.toc-sidebar-title {
+  flex: 0 0 auto;
+  margin: 0 0 8px 4px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--secondary);
+}
+
+.toc-sidebar-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 360px;
+  /* 屏幕越高，可视目录越多 */
+  max-height: clamp(240px, 52vh, 720px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.toc-sidebar-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.toc-sidebar-body::-webkit-scrollbar-thumb {
+  background: var(--tertiary);
+  border-radius: 3px;
+}
+
+#TableOfContentsSidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#TableOfContentsSidebar ul ul {
+  margin-left: 4px;
+  padding-left: 7px;
+  border-left: 1px solid var(--border);
+}
+
+#TableOfContentsSidebar li {
+  margin: 1px 0;
+}
+
+#TableOfContentsSidebar a {
+  display: block;
+  padding: 4px 7px;
+  color: var(--secondary);
+  font-size: 13px;
+  line-height: 1.45;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 4px;
+  transition: background-color 0.15s ease,
+              color 0.15s ease,
+              border-color 0.15s ease;
+}
+
+#TableOfContentsSidebar ul ul a {
+  font-size: 12.5px;
+}
+
+#TableOfContentsSidebar a:hover {
+  color: var(--primary);
+}
+
+#TableOfContentsSidebar a.active {
+  color: var(--primary);
+  background: var(--glass-bg-hover);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+/* 只保留 h2/h3，隐藏 h4 及更深层级 */
+#TableOfContentsSidebar ul ul ul {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .toc-sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-single.has-toc-sidebar details.toc {
+    display: none;
+  }
+
+  /* 点击大纲后，目标标题停在视口 34% 处，
+     比 42% 的高亮判定线略高 */
+  .post-single.has-toc-sidebar .post-content h2,
+  .post-single.has-toc-sidebar .post-content h3 {
+    scroll-margin-top: 34vh;
+  }
+}
+
+@media print {
+  .toc-sidebar {
+    display: none !important;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .toc-sidebar {
+    background: var(--fb-glass) !important;
+  }
+}

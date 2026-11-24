@@ -1,0 +1,152 @@
+{{- $toc := .TableOfContents -}}
+{{- $toc = $toc | replaceRE `id="TableOfContents"` `id="TableOfContentsSidebar" aria-label="文章大纲"` -}}
+{{- if $toc -}}
+<aside class="toc-sidebar">
+  <div class="toc-sidebar-title">大纲</div>
+  <div class="toc-sidebar-body">
+    {{- $toc | safeHTML -}}
+  </div>
+</aside>
+
+<script>
+(function () {
+  var nav = document.getElementById('TableOfContentsSidebar');
+  var sidebar = document.querySelector('.toc-sidebar');
+  if (!nav || !sidebar) return;
+
+  var body = sidebar.querySelector('.toc-sidebar-body');
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+  if (!links.length) return;
+
+  var headings = Array.prototype.slice.call(
+    document.querySelectorAll('.post-content h2[id], .post-content h3[id]')
+  );
+  if (!headings.length) return;
+
+  var byId = {};
+  links.forEach(function (link) {
+    var href = link.getAttribute('href') || '';
+    var id = href.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch (e) {}
+    byId[id] = link;
+  });
+
+  var current = null;
+  var raf = window.requestAnimationFrame || function (fn) { return setTimeout(fn, 16); };
+  var ticking = false;
+
+  /* 动态模式：让当前高亮项尽量停在面板中上部 */
+  var ANCHOR_RATIO = 0.36;
+  var suspendedUntil = 0;
+  var resumeTimer = null;
+  var resizeTimer = null;
+
+  function positionActive(smooth) {
+    if (!current || Date.now() < suspendedUntil) return;
+
+    var lr = current.getBoundingClientRect();
+    var br = body.getBoundingClientRect();
+    var max = Math.max(0, body.scrollHeight - body.clientHeight);
+    var target = body.scrollTop + (lr.top - br.top) - body.clientHeight * ANCHOR_RATIO;
+    target = Math.max(0, Math.min(max, target));
+
+    if (Math.abs(target - body.scrollTop) < 2) return;
+
+    var reduce = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (smooth && !reduce && body.scrollTo) {
+      try {
+        body.scrollTo({ top: target, behavior: 'smooth' });
+      } catch (e) {
+        body.scrollTop = target;
+      }
+    } else {
+      body.scrollTop = target;
+    }
+  }
+
+  /* 用户手动滚大纲时先暂停自动归位，避免抢滚动 */
+  function suspendAutoPosition() {
+    suspendedUntil = Date.now() + 2500;
+    if (resumeTimer) clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(function () {
+      suspendedUntil = 0;
+      positionActive(false);
+    }, 2600);
+  }
+
+  function setActive(link, smooth) {
+    if (link === current) return;
+
+    if (current) {
+      current.classList.remove('active');
+      current.removeAttribute('aria-current');
+    }
+
+    current = link;
+    if (!current) return;
+
+    current.classList.add('active');
+    current.setAttribute('aria-current', 'location');
+    positionActive(smooth);
+  }
+
+  function update(smooth) {
+    var offset = window.innerHeight * 0.42;
+    var active = null;
+
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].getBoundingClientRect().top <= offset) {
+        active = headings[i];
+      } else {
+        break;
+      }
+    }
+
+    if (!active) active = headings[0];
+    setActive(byId[active.id] || null, smooth);
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    raf(function () {
+      update(true);
+      ticking = false;
+    });
+  }
+
+  body.addEventListener('wheel', suspendAutoPosition, { passive: true });
+  body.addEventListener('touchmove', suspendAutoPosition, { passive: true });
+  links.forEach(function (link) {
+    link.addEventListener('click', function () {
+      suspendedUntil = 0;
+      if (resumeTimer) {
+        clearTimeout(resumeTimer);
+        resumeTimer = null;
+      }
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, false);
+  window.addEventListener('resize', function () {
+    positionActive(false);
+    onScroll();
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      positionActive(false);
+    }, 150);
+  }, false);
+  window.addEventListener('load', function () {
+    update(false);
+  }, false);
+  window.addEventListener('hashchange', function () {
+    update(true);
+  }, false);
+  update(false);
+})();
+</script>
+{{- end -}}

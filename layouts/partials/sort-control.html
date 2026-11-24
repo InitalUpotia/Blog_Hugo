@@ -1,0 +1,86 @@
+{{- $sortBy := .Params.sortBy | default "Date" -}}
+{{- $sortOrder := .Params.sortOrder | default "desc" -}}
+{{- $label := "发布时间：新 → 旧" -}}
+{{- if and (eq $sortBy "Date") (eq $sortOrder "asc") -}}
+  {{- $label = "发布时间：旧 → 新" -}}
+{{- else if and (eq $sortBy "Lastmod") (eq $sortOrder "desc") -}}
+  {{- $label = "最后编辑：新 → 旧" -}}
+{{- else if and (eq $sortBy "Lastmod") (eq $sortOrder "asc") -}}
+  {{- $label = "最后编辑：旧 → 新" -}}
+{{- end -}}
+<div class="list-sort">
+  <span class="list-sort-label" id="sort-label">排序</span>
+  <div class="sort-menu" id="sort-menu">
+    <button type="button" class="sort-menu-toggle"
+            aria-haspopup="true" aria-expanded="false"
+            aria-labelledby="sort-label sort-current">
+      <span id="sort-current">{{ $label }}</span>
+      <span class="sort-menu-arrow" aria-hidden="true">▼</span>
+    </button>
+
+    <div class="sort-menu-panel" role="menu" aria-labelledby="sort-label" aria-hidden="true">
+      <a role="menuitem" href="{{ "/posts/" | relURL }}"
+        {{- if and (eq $sortBy "Date") (eq $sortOrder "desc") }} aria-current="page"{{ end }}>发布时间：新 → 旧</a>
+      <a role="menuitem" href="{{ "/posts/oldest/" | relURL }}"
+        {{- if and (eq $sortBy "Date") (eq $sortOrder "asc") }} aria-current="page"{{ end }}>发布时间：旧 → 新</a>
+      <a role="menuitem" href="{{ "/posts/updated/" | relURL }}"
+        {{- if and (eq $sortBy "Lastmod") (eq $sortOrder "desc") }} aria-current="page"{{ end }}>最后编辑：新 → 旧</a>
+      <a role="menuitem" href="{{ "/posts/updated-oldest/" | relURL }}"
+        {{- if and (eq $sortBy "Lastmod") (eq $sortOrder "asc") }} aria-current="page"{{ end }}>最后编辑：旧 → 新</a>
+    </div>
+  </div>
+
+  <noscript>
+    <span class="list-sort-links">
+      <a href="{{ "/posts/" | relURL }}">发布时间新→旧</a> ·
+      <a href="{{ "/posts/oldest/" | relURL }}">发布时间旧→新</a> ·
+      <a href="{{ "/posts/updated/" | relURL }}">最后编辑新→旧</a> ·
+      <a href="{{ "/posts/updated-oldest/" | relURL }}">最后编辑旧→新</a>
+    </span>
+  </noscript>
+</div>
+
+<script>
+(function () {
+  var menu = document.getElementById('sort-menu');
+  if (!menu) return;
+
+  var btn = menu.querySelector('.sort-menu-toggle');
+  var panel = menu.querySelector('.sort-menu-panel');
+
+  function setOpen(open) {
+    menu.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(!menu.classList.contains('is-open'));
+  });
+
+  btn.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setOpen(true);
+      var first = panel.querySelector('a');
+      if (first) first.focus();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!menu.contains(e.target)) setOpen(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+
+  panel.addEventListener('click', function () {
+    setOpen(false);
+  });
+})();
+</script>
