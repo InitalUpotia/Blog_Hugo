@@ -9,6 +9,8 @@ cover:
     image: "image-for-test/test1.webp"
     alt: "A sample cover image"
     caption: "~ 八千代镇楼 ~"
+description: '用于测试 Markdown 渲染的示例文章，覆盖表格、代码块、脚注、KaTeX 公式、Mermaid 图表、图片，以及网易云音乐和 Bilibili 短代码。'
+keywords: ['Markdown 测试', '短代码', 'KaTeX', 'Mermaid', 'Hugo', 'PaperMod']
 ---
 
 ## 基础格式

@@ -8,6 +8,8 @@ cover:
     image: "xh-1.webp"
     alt: "A sample cover image"
     caption: "~ 西湖一角 ~"
+description: '以实践作业取材为名的一日杭州行：地铁转场、西湖周边的历史遗迹探访，以及工联 CC 里 animate、DLsite 等 ACGN 店铺巡礼。'
+keywords: ['杭州', '游记', '西湖', '历史遗迹', 'ACGN', 'animate', '工联 CC', '马拉松']
 ---
 
 周六正好没什么事，所以就打着为实践作业取材的名义去杭州玩一趟吧。

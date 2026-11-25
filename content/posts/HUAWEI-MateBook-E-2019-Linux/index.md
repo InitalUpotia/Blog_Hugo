@@ -9,6 +9,8 @@ cover:
   image: "cover.webp"
   alt: ""
   caption: "~ 第一次拍出清晰的图像 ~"
+description: '给 MateBook E 2019 编译并刷入 Linux 的过程：借助 Planck 项目与 AI 修补各类驱动，再用 Waydroid 跑安卓应用和游戏。'
+keywords: ['HUAWEI MateBook E 2019', 'Linux', 'Fedora', 'Waydroid', '骁龙 850', '驱动适配', '刷机']
 ---
 
 前情提要：[iNITAL 的垃圾站：一切孽缘的伊始——HUAWEI MateBook E 2019（上）](https://blog.inital.top/posts/huawei-matebook-e-2019/)

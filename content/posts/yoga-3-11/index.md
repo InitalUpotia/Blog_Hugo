@@ -9,6 +9,8 @@ cover:
     image: "1-2.webp"
     alt: "A sample cover image"
     caption: "~ 演示形态 ~"
+description: '一百多元捡来的 Lenovo YOGA 3 11：四种变换形态、近 14 寸的全尺寸键盘、屏幕与接口配置，以及拆机更换无线网卡的过程。'
+keywords: ['Lenovo YOGA 3 11', '二合一', 'Windows 平板', '换网卡', '拆机', '捡垃圾']
 ---
 
 ## 起源

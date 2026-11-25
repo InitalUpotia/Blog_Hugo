@@ -9,6 +9,8 @@ cover:
     image: "image-for-test/test1.webp"
     alt: "A sample cover image"
     caption: "~ Obligatory Yachiyo to start ~"
+description: 'A sample post used to test Markdown rendering, code blocks, footnotes, math, Mermaid diagrams, images, and the NetEase Cloud Music / Bilibili shortcodes.'
+keywords: ['Markdown test', 'shortcodes', 'KaTeX', 'Mermaid', 'Hugo', 'PaperMod']
 ---
 
 ## Basic

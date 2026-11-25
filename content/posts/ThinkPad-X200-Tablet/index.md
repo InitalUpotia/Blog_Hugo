@@ -9,6 +9,8 @@ cover:
     image: "2.webp"
     alt: "A sample cover image"
     caption: "~ 优雅的旋转 ~"
+description: '218 元收来的 ThinkPad X200 Tablet：咸鱼购买插曲、原机主留下的数据、跑马灯外观，以及 L9300 平台的性能实测。'
+keywords: ['ThinkPad X200 Tablet', 'Core 2 Duo L9300', 'GMA 4500MHD', '二手笔记本', 'Windows 平板', '捡垃圾']
 ---
 # 
 

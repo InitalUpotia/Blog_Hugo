@@ -8,6 +8,8 @@ cover:
     image: "iamge-for-journel-C.jpg"
     alt: "A sample cover image"
     caption: "~ 张景岚镇楼 ~"
+description: '记录一次 C 语言先修课测试：考前突击各种未定义行为写法，机房里 45 分钟写完选择题、填空、函数题和程序题的流水账。'
+keywords: ['C 语言', '先修课', '机考', '游记', '洛谷', '大学生活']
 ---
 
 还是要过一把游记的瘾呢~ 虽然只是个很水的测试。

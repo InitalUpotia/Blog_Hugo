@@ -9,6 +9,8 @@ cover:
   image: "2022.webp"
   alt: ""
   caption: "~ 2022 年，与当时新买的 LG 显示器的合拍 ~"
+description: '骁龙 850 版华为 MateBook E 2019 的折腾史（上）：从六年级的第一台电脑、64 位软件的困境，到 Windows 11 升级与各部件配置回顾。'
+keywords: ['HUAWEI MateBook E 2019', '骁龙 850', 'Windows on ARM', 'Windows 11', '二合一平板', '捡垃圾']
 ---
 
 ## 总述

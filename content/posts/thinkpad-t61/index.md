@@ -9,6 +9,8 @@ cover:
     image: "1.webp"
     alt: "A sample cover image"
     caption: "~ 看着就给人坚固耐用的印象呢 ~"
+description: '314 元买入、一个月后卖出的 ThinkPad T61：末代 IBM 三色标、T9300 与 Quadro NVS 140M 的实测表现，以及避开显卡门的那点运气。'
+keywords: ['ThinkPad T61', 'IBM ThinkPad', 'Core 2 Duo T9300', 'Quadro NVS 140M', '显卡门', '二手笔记本']
 ---
 
 ## 短暂的邂逅

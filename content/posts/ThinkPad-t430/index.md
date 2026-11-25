@@ -4,12 +4,13 @@ draft: false
 title: 'iNITAL 的垃圾站：旧瓶装新酒，旧物遇新人——Lenovo ThinkPad T430'
 author: 'iNITAL'
 columns: ['iNITAL 的垃圾站']
-description: '这篇记录 ThinkPad T430 的拆机、升级和黑苹果折腾过程。'
+description: '从 IBM 时代的设计遗产到全面改装：ThinkPad T430 的外观细节、硬件配置、拆机过程、4337 拓展坞玩法与黑苹果实践。'
 tags: ['技术','硬件','ThinkPad','CRT','黑苹果','Linux','杂谈','回忆']
 cover:
     image: "cover.webp"
     alt: "A sample cover image"
     caption: "~ 跑 Win11 丝毫不卡 ~"
+keywords: ['ThinkPad T430', '经典 ThinkPad', '拆机', '升级', '黑苹果', '4337 拓展坞', '七行键盘']
 ---
 
 {{< netease-cloud-music id=803573 type=song height=80 width=500 title="雨格子の时计" >}}
