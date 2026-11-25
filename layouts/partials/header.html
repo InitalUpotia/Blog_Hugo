@@ -59,7 +59,7 @@
                 {{- end }}
 
                 <button id="bg-view-toggle" class="bg-view-toggle" type="button"
-                        title="欣赏背景图" aria-label="欣赏背景图"
+                        title="{{ i18n "custom_bg_view" }}" aria-label="{{ i18n "custom_bg_view" }}"
                         aria-controls="bg-viewer" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -71,7 +71,7 @@
                 </button>
 
                 <button id="bg-change-toggle" class="bg-change-toggle" type="button"
-                        title="更换图片" aria-label="更换图片" hidden>
+                        title="{{ i18n "custom_bg_change" }}" aria-label="{{ i18n "custom_bg_change" }}" hidden>
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -82,20 +82,21 @@
                 
                 {{- if (not site.Params.disableLangToggle) }}
                     {{- $lang := .Lang}}
-                    {{- with site.Home.Translations }}
+                    {{- with .Translations }}
                     {{- $separator := or $label_text (not site.Params.disableThemeToggle)}}
                     {{- if $separator }}<span class="nav-sep">|</span>{{ end }}
                     <ul class="lang-menu">
                         {{- range . -}}
                         {{- if ne $lang .Lang }}
+                        {{- $langName := .Language.Label | default (.Lang | title) }}
                         <li>
-                            <a href="{{- .Permalink -}}" title="{{ .Language.Params.languageAltTitle | default (.Language.LanguageName | emojify) | default (.Lang | title) }}"
-                                aria-label="{{ .Language.LanguageName | default (.Lang | title) }}">
-                                {{- if (and site.Params.displayFullLangName (.Language.LanguageName)) }}
-                                {{- .Language.LanguageName | emojify -}}
+                            <a href="{{- .Permalink -}}" title="{{ .Language.Params.languageAltTitle | default $langName }}"
+                                aria-label="{{ $langName }}">
+                                {{- if site.Params.displayFullLangName }}
+                                {{- $langName | emojify -}}
                                 {{- else }}
                                 {{- .Lang | title -}}
-                                {{- end -}}
+                                {{- end }}
                             </a>
                         </li>
                         {{- end -}}
@@ -125,9 +126,10 @@
                 </ul>
             </li>
             {{- else -}}
+            {{- $menuURL := .URL | absLangURL }}
             <li>
-                <a href="{{ .URL | absLangURL }}">
-                    <span {{- if eq $currentPage.RelPermalink .URL }} class="active" {{- end }}>
+                <a href="{{ $menuURL }}">
+                    <span {{- if eq $currentPage.Permalink $menuURL }} class="active" {{- end }}>
                         {{ .Name }}
                     </span>
                 </a>

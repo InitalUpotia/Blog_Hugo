@@ -1,75 +1,215 @@
 # 博客写作与维护手册
 
-> 本文件放在 `docs/` 下，不参与 Hugo 站点构建，仅作为个人备忘。
-> 最后核对时间：2026-11-08。
+> 本文件放在 `docs/` 下，不参与 Hugo 站点构建。
+> 最后核对时间：2026-11-25。
+> 目标：让作者本人和其他 AI 在尽量少的上下文下，快速理解站点结构、写作流程和不可随意改动的部分。
 
 ---
 
-## 0. 一句话概览
+## 0. 快速事实
 
-- 框架：Hugo 0.167 extended + PaperMod（Git submodule）
-- 部署：GitHub 仓库推送到 `main` 后，Vercel 自动执行 `hugo --gc --minify`
-- 写作：`content/posts/` 下建 Page Bundle，图片和 `index.md` 放同一目录
-- 发布：`draft: false` → commit → push → 等 Vercel 构建完成
-- `public/`、`resources/_gen/`、`.hugo_build.lock` 已在 `.gitignore`，不要提交
-
----
-
-## 1. 本地环境与常用命令
-
-### 1.1 环境
-
-- Hugo extended ≥ 0.146（当前 0.167.0）
-- Git
-- Go（仅 Hugo Modules 用，当前用于 `hugomods/shortcodes`）
-
-### 1.2 常用命令
-
-```bash
-# 本地预览（包含草稿）
-hugo server -D
-
-# 只构建，检查错误和重复路径
-hugo --gc --minify --printPathWarnings
-
-# 新建文章（Page Bundle）
-hugo new content posts/my-post/index.md
-
-# 发布
-git add -A
-git commit -m "post: 文章标题"
-git push
-```
-
-> `hugo server` 默认不显示草稿，调试草稿要加 `-D`。
-> 构建产物在 `public/`，已被 Git 忽略；本地预览直接看 `hugo server`，不要用 `public/` 当预览源。
+- 框架：Hugo extended + PaperMod；当前构建版本 0.167.0
+- 部署：GitHub `main` → Vercel 自动执行 `hugo --gc --minify`
+- 站点语言：中文为默认语言，位于根路径；英文位于 `/en/`
+- 英文定位：中文文章的译文，不独立发布英文文章
+- 评论：Waline，服务端 `https://waline.inital.top`
+- 全站统计：自建 API `https://stats.inital.top/api/hit`
+- 背景图：`https://t.alcy.cc/ycy?json`，同一标签页内固定
+- 构建产物：`public/`，已被 Git 忽略
+- 不需要 Go，也不要重新引入 Hugo Modules；短代码已经内联到 `layouts/shortcodes/`
+- 主题 `themes/PaperMod/` 是 Git submodule，不要直接改主题文件
+- 本地 `public/` 可能被 `hugo server` 写入 `livereload.js`，不要拿本地 `public/` 当线上产物判断
 
 ---
 
-## 2. 新建一篇文章
-
-### 2.1 推荐目录结构
+## 1. 站点整体架构
 
 ```text
-content/posts/
-└── my-post/
-    ├── index.md
-    ├── cover.webp
-    ├── 1.webp
-    └── 2.webp
+content/                  Markdown 原稿
+    ├── posts/            文章，推荐 Page Bundle
+    ├── columns/          专栏 taxonomy 的介绍页
+    ├── about.md
+    ├── archives.md
+    ├── search.md
+    ├── guestbook.md
+    └── sorted/           隐藏的排序页父级
+            ↓
+layouts/                  Hugo 模板：页面结构、partials、shortcodes
+assets/css/extended/      自定义 CSS
+i18n/                     自定义界面文案的中英文翻译
+static/                   logo、favicon、Safari 图标等静态资源
+            ↓
+Hugo 构建
+            ↓
+public/                   HTML/CSS/图片产物
+            ↓
+Vercel                    部署 https://blog.inital.top/
 ```
 
-这种叫 Page Bundle，文章里的图片和封面直接写文件名即可，不会和别的文章串图。
+### 1.1 Hugo 的工作方式
 
-也可以用单文件 `content/posts/my-post.md`，但图片只能放 `static/`，路径更容易写错，非必要不推荐。
+- `content/**/*.md` 写内容
+- `layouts/**` 决定页面长什么样
+- `assets/css/extended/custom.css` 是主要视觉定制文件
+- `static/` 下的文件会原样复制到站点根目录
+- `hugo --gc --minify` 生成 `public/`
+- 浏览器里的页面 = HTML 骨架 + CSS 皮肤 + JavaScript 行为
 
-### 2.2 Front Matter 模板
+### 1.2 主要页面类型
 
-运行 `hugo new content posts/my-post/index.md` 会按 `archetypes/default.md` 生成：
+| 页面 | 路径 | 模板 |
+|---|---|---|
+| 首页 | `/`、`/en/` | PaperMod 默认 + `homeInfoParams` |
+| 文章列表 | `/posts/`、`/en/posts/` | `layouts/list.html` |
+| 文章详情 | `/posts/xxx/`、`/en/posts/xxx/` | `layouts/_default/single.html` |
+| 专栏总览 | `/columns/`、`/en/columns/` | `layouts/columns/terms.html` 或主题模板 |
+| 标签总览 | `/tags/`、`/en/tags/` | `layouts/taxonomy.html` |
+| 归档 | `/archives/`、`/en/archives/` | PaperMod 的 `archives` 布局 |
+| 搜索 | `/search/`、`/en/search/` | PaperMod 的 `search` 布局 |
+| 留言板 | `/guestbook/`、`/en/guestbook/` | `layouts/_default/guestbook.html` |
+| 排序视图 | `/posts/oldest/` 等 | `layouts/list.html` + `content/sorted/` |
+
+---
+
+## 2. 多语言结构
+
+### 2.1 URL 规则
+
+`hugo.yaml` 当前配置：
+
+```yaml
+defaultContentLanguage: "zh"
+defaultContentLanguageInSubdir: false
+```
+
+所以：
+
+```text
+中文：/posts/foo/
+英文：/en/posts/foo/
+```
+
+中文 URL 保持根路径，不额外加 `/zh/`。
+
+### 2.2 文件规则
+
+中文源文保持原来的无后缀文件名：
+
+```text
+content/posts/foo.md
+```
+
+英文译文新增 `.en.md`：
+
+```text
+content/posts/foo.en.md
+```
+
+Page Bundle：
+
+```text
+content/posts/foo/
+├── index.md
+├── index.en.md
+└── 图片资源
+```
+
+同一个路径下的中文和英文文件会自动配对，**不需要强制改中文文件名为 `.zh.md`**。
+
+如果中英文文件名或 slug 不一致，需要在两边都写相同的：
+
+```yaml
+translationKey: "posts/foo"
+```
+
+> 不要只在英文文件里写 `translationKey`。两边不一致时，Hugo 可能不认为它们是译文，评论/阅读量也不会串通。
+
+### 2.3 英文只做译文
+
+英文文章不独立创作。约定：
+
+- 英文内容必须能找到对应中文源文
+- 未翻译完的 `.en.md` 用 `draft: true`
+- 不要在英文文件里写语言无关的固定 `url`
+- 典型错误：
+
+```yaml
+# 错：英文归档会抢占中文 /archives/
+url: "/archives/"
+```
+
+英文页应该让 Hugo 自动生成 `/en/...`，不要手写和中文相同的 `url`。
+
+### 2.4 语言切换
+
+- 由 `layouts/partials/header.html` 处理
+- 使用当前页的 `.Translations`
+- 当前页有对应译文才显示语言入口
+- 当前页没有译文则隐藏英文入口，避免跳到 404
+- 中英文菜单在 `hugo.yaml` 的 `languages.<lang>.menu` 中分别配置
+- 语言菜单链接的是当前页译文，不是各语言首页
+
+### 2.5 hreflang / canonical
+
+- PaperMod 的 `head.html` 已通过 `.AllTranslations` 输出 `hreflang`
+- 不要重复在 `extend_head.html` 再加一套 `hreflang`
+- canonical 由 PaperMod 生成
+- sitemap 由 Hugo 生成；`enableRobotsTXT: true` 已开启
+
+### 2.6 中英文数据是否共享
+
+已共享：
+
+- 站点总 PV / UV
+- 文章评论
+- 文章阅读量
+- 列表页文章卡片阅读量
+- 留言板评论：中英文都使用 `/guestbook/` 作为 Waline path
+
+仍分开：
+
+- 搜索索引：`/index.json` 和 `/en/index.json` 各管各语言
+- 标签、专栏 taxonomy
+- 英文和中文的 taxonomy 术语
+- 英文页面的搜索 UI/placeholder 仍需单独翻译
+
+---
+
+## 3. 日常写作流程
+
+### 3.1 新建中文文章
+
+推荐 Page Bundle：
+
+```bash
+hugo new content posts/my-post/index.md
+```
+
+结构：
+
+```text
+content/posts/my-post/
+├── index.md
+├── cover.webp
+├── 1.webp
+└── 2.webp
+```
+
+单文件也可以：
+
+```text
+content/posts/my-post.md
+```
+
+但图片路径更容易错，非必要不推荐。
+
+### 3.2 中文 Front Matter 模板
+
+`archetypes/default.md` 当前模板：
 
 ```yaml
 ---
-date: '2026-11-08T20:00:00+08:00'
+date: '2026-11-25T20:00:00+08:00'
 draft: true
 title: '文章标题'
 author: 'iNITAL'
@@ -77,8 +217,8 @@ tags: []
 # columns: ['iNITAL 的垃圾站']
 # cover:
 #   image: "cover.webp"
-#   alt: "封面说明"
-#   caption: "显示在封面下方的图注"
+#   alt: ""
+#   caption: ""
 ---
 ```
 
@@ -86,76 +226,104 @@ tags: []
 
 | 字段 | 说明 |
 |---|---|
-| `title` | 文章标题 |
-| `date` | 发布时间，保留时区 `+08:00` |
+| `title` | 标题 |
+| `date` | 发布时间，保留 `+08:00` |
 | `draft` | `true` 不发布，`false` 发布 |
 | `author` | 作者 |
-| `tags` | 标签数组，会生成 `/tags/` 页面 |
-| `columns` | 专栏名数组，值必须和 `content/columns/` 下的目录名一致 |
-| `description` | 搜索摘要/分享摘要，建议每篇都写 |
+| `tags` | 标签数组 |
+| `columns` | 专栏数组，值必须和 `content/columns/` 目录名一致 |
+| `description` | 摘要，建议每篇都写 |
 | `math` | 需要公式时写 `math: true` |
-| `cover` | 封面图，`image` 写 bundle 内的文件名或 `/static` 路径 |
-| `lastmod` | 需要覆盖自动"最后更新"时间时才写 |
+| `cover` | 封面图 |
+| `lastmod` | 需要覆盖自动最后更新时间时才写 |
 
-> 专栏的 front matter key 是 **`columns`**（复数），不是 `column`、`category`。
-> 对应配置在 `hugo.yaml` 的 `taxonomies: category: columns`。
+> 专栏的 key 是 `columns`（复数），配置来自 `taxonomies: category: columns`。
 
-### 2.3 发布前把 `draft` 改成 `false`
+### 3.3 新建英文译文
 
-```yaml
-draft: false
+直接复制中文文件并改名为 `.en.md`：
+
+```bash
+cp content/posts/my-post/index.md content/posts/my-post/index.en.md
 ```
 
-`hugo` 正式构建不会输出 `draft: true` 的文章。
+然后：
+
+1. 翻译正文和 front matter 中的标题、摘要、图注
+2. 把 `draft` 改成 `true`，翻译完成后再改 `false`
+3. 如果文件名和中文不同，两边都加 `translationKey`
+4. 不要把英文文件的 `url` 写成中文路径
+
+英文 Front Matter 可以简化为：
+
+```yaml
+---
+title: 'English Title'
+date: '2026-11-25T20:00:00+08:00'
+draft: true
+author: 'iNITAL'
+tags: ['Test']
+description: 'English summary'
+# translationKey: 'posts/my-post'   # 只有路径/slug 不一致时才需要
+---
+```
+
+### 3.4 发布
+
+```bash
+hugo --gc --minify --printPathWarnings
+git add -A
+git commit -m "post: 文章标题"
+git push
+```
+
+Vercel 会重新构建。发布前确认：
+
+- 中文和英文都没有误留 `draft: true`
+- 英文页面内容已经翻译，不是中文复制品
+- 封面图片存在
+- 本地预览过浅色/深色模式
 
 ---
 
-## 3. 正文写法
+## 4. 正文写法
 
-### 3.1 图片
+### 4.1 图片
 
 Page Bundle 内直接写文件名：
 
 ```markdown
-![](1.webp "~ 这是图注，会显示在图片下方 ~")
+![](1.webp "~ 图注 ~")
 ```
 
-- 带 `"标题"` 会渲染成 `<figure>` + `<figcaption>`；
-- 不带标题就是普通 `<img>`；
-- 渲染钩子已经自动加 `loading="lazy"` 和 `decoding="async"`；
-- **不会**做 Hugo 压缩/缩放，纵横比按原图显示；
-- 建议上传前自己压成 WebP（Squoosh、ImageOptim 等），单张控制在 300KB 以内。
+当前渲染钩子：
 
-如果要放大图看原图，目前没有开启点击放大；需要的话可以在主题层面加 lightbox，不属于写作流程。
+`layouts/_default/_markup/render-image.html`
 
-### 3.2 封面
+只做两件事：
 
-```yaml
-cover:
-  image: "cover.webp"
-  alt: "封面替代文字"
-  caption: "封面图注"
-```
+- 带 `"标题"` 时输出 `<figure>` + `<figcaption>`
+- 加 `loading="lazy"` 和 `decoding="async"`
 
-注意：封面图仍然会被 PaperMod 处理（生成响应式 srcset）。如果封面比例也被压坏，在 `hugo.yaml` 加：
+它**不会**：
 
-```yaml
-params:
-  cover:
-    responsiveImages: false
-```
+- 压缩图片
+- 生成多尺寸 `srcset`
+- 自动修正纵横比
 
-正文图片不受这个开关影响。
+所以正文图片仍然需要上传前手动压缩，建议单张控制在 300KB 以内。
 
-### 3.3 数学公式
+封面图由 PaperMod 处理，可能生成响应式 `srcset`。
 
-在 front matter 加：
+### 4.2 数学公式
+
+Front matter：
 
 ```yaml
 math: true
 ```
 
-支持：
+正文：
 
 ```markdown
 行内：$E = mc^2$
@@ -166,9 +334,19 @@ $$
 $$
 ```
 
-不写 `math: true` 的页面不会加载 KaTeX，这是有意的性能优化。
+没有 `math: true` 的页面不会加载 KaTeX。
 
-### 3.4 网易云音乐 / Bilibili
+### 4.3 Mermaid
+
+正文代码块使用 `mermaid` 语言标记即可。
+
+- `layouts/partials/mermaid.html` 先检查页面有没有 `.mermaid` 节点
+- 没有节点就不加载 Mermaid
+- 主题切换时会重新渲染
+
+### 4.4 网易云音乐 / Bilibili
+
+短代码已经内联，不依赖 Hugo Modules：
 
 ```markdown
 {{< netease-cloud-music id=22805132 type=song height=80 width=500 title="Masquerade" >}}
@@ -176,11 +354,11 @@ $$
 {{< bilibili "BV1uhYueJErx" >}}
 ```
 
-这两个短代码来自 `hugomods/shortcodes` 模块；如果以后删掉模块，需要把短代码模板复制到 `layouts/shortcodes/`。
+Bilibili 播放器已默认 `autoplay=0`。
 
-### 3.5 Markdown 扩展语法
+### 4.5 Markdown 扩展
 
-当前启用了：
+当前启用：
 
 ```markdown
 ==高亮==
@@ -190,290 +368,358 @@ $$
 ~~删除~~
 ```
 
-原始 HTML 默认**不会**渲染（Goldmark `unsafe` 未开启）。确实需要 `<u>`、`<details>` 这类标签时，在 `hugo.yaml` 的 `markup.goldmark` 下加：
+Goldmark 的 `unsafe` 没有开启，原始 HTML 默认不渲染。
 
-```yaml
-renderer:
-  unsafe: true
-```
+### 4.6 专栏与标签
 
-只在自己的内容里用，不要渲染外部来源的 HTML。
-
-### 3.6 表格、引用、代码块
-
-正常 Markdown 即可。代码块会自动带复制按钮（`ShowCodeCopyButtons: true`）。
+- 新专栏：新建 `content/columns/专栏名/_index.md`
+- 文章引用：`columns: ['专栏名']`
+- 标签自动生成 `/tags/`
+- 专栏 URL 和目录名有关，上线后尽量不要改名
 
 ---
 
-## 4. 专栏（columns）
+## 5. 评论、阅读量与外部服务
 
-### 4.1 新建专栏
+### 5.1 Waline 文章评论
 
-1. 新建目录和介绍页：
+相关文件：
+
+- `layouts/partials/comments.html` → 调用 `waline.html`
+- `layouts/partials/waline.html`
+- `layouts/partials/comment-path.html`
+
+行为：
+
+- 评论区接近视口 600px 时才加载 Waline
+- Waline UI 语言按页面语言切换：`zh-CN` / `en-US`
+- 文章评论和留言板评论都通过 `path` 共享
+
+### 5.2 评论/阅读量跨语言共享
+
+`layouts/partials/comment-path.html` 的规则：
+
+- 中文页面：使用自己的 `.RelPermalink`
+- 英文页面：在 `.Translations` 中找中文源文，使用中文源文的 `.RelPermalink`
+- 找不到中文源文时，退回英文自己的路径
+
+例如：
 
 ```text
-content/columns/我的新专栏/_index.md
+中文：/posts/foo/
+英文：/en/posts/foo/
+Waline path：两边都是 /posts/foo/
 ```
 
-```yaml
+注意：
+
+- 这个机制依赖“中英文文件能配对”
+- 同路径的 `foo.md` / `foo.en.md` 自动配对
+- 文件名或 slug 不同时，两边都要写 `translationKey`
+- 不要随意改这个 partial，否则历史评论和阅读量会分家
+
+### 5.3 留言板
+
+`layouts/_default/guestbook.html`：
+
+- 中文 `/guestbook/` 和英文 `/en/guestbook/` 都使用 Waline path `/guestbook/`
+- 所以留言板评论共享
+- UI 语言仍按页面切换
+
+### 5.4 阅读量
+
+- 文章详情：`single.html` 里用 `pageviewCount`，带 `path` 和 `data-path`
+- 列表卡片：`list.html` 里用 `data-path`
+- 两者都通过 `comment-path.html` 取共享路径
+- Waline 服务端在 `https://waline.inital.top`
+
+### 5.5 全站 PV / UV
+
+`layouts/partials/extend_footer.html`：
+
+- 调 `https://stats.inital.top/api/hit`
+- 只在正式域名 `blog.inital.top` 统计
+- 本地/预览不会污染线上数据
+- 中英文页面都算进同一个站点总量
+
+### 5.6 搜索
+
+- `/search/` 和 `/en/search/` 分别使用各语言的 `index.json`
+- 搜索页已设置 `robotsNoIndex: true`
+- 英文搜索页的 `placeholder` 目前仍是中文，需要后续翻译
+- 搜索索引目前不跨语言共享
+
 ---
-title: '我的新专栏'
----
-这里写专栏介绍，会显示在专栏页顶部。
-```
 
-2. 文章 front matter 引用：
+## 6. 背景图、毛玻璃与页面组件
 
-```yaml
-columns: ['我的新专栏']
-```
-
-3. 至少给该专栏下的一篇文章加封面，专栏卡片会取"最新一篇有封面的文章"的图作为缩略图。
-
-### 4.2 注意
-
-- 专栏目录名一旦上线，尽量不要再改，改了 URL 会变；
-- 旧的专栏 URL 如果要保留，需要在 `vercel.json` 里加 `redirects`；
-- 专栏名大小写由模板里的 `.Page.Data.Term` 保留，不需要额外处理。
-
----
-
-## 5. 站点定制说明
-
-### 5.1 背景图
+### 6.1 随机背景
 
 位置：`layouts/partials/extend_head.html`
 
-- 调 `https://t.alcy.cc/ycy?json` 拿一张固定图片 URL；
-- 存进 `sessionStorage`，同一标签页内翻文章不变；
-- 关闭标签页/浏览器后重新随机；
-- 接口失败时退回直链，这时每页可能变化。
+- 请求 `https://t.alcy.cc/ycy?json`
+- URL 写入 `sessionStorage` 的 `blog-bg-url`
+- 同一标签页内翻页不变
+- 新标签页/关闭浏览器后重新随机
+- 接口失败时退回 `https://t.alcy.cc/ycy`
 
-换图源就改这里的 URL。想按天变化而不是按会话变化，把 `sessionStorage` 换成 `localStorage` 并自己加日期 key。
+导航栏有：
 
-### 5.2 背景蒙版与毛玻璃
+- 欣赏背景图按钮
+- 更换背景图按钮
+- 换图时使用 `.bg-transition-layer` 做交叉淡入
+- 支持 `prefers-reduced-motion`
 
-位置：`assets/css/extended/custom.css`
+### 6.2 毛玻璃
 
-```css
---bg-mask: rgba(255, 255, 255, 0.4);  /* 浅色背景蒙版 */
---bg-mask: rgba(0, 0, 0, 0.6);        /* 深色 */
---glass-bg: rgba(255, 255, 255, 0.4); /* 卡片/文章玻璃底色 */
---glass-blur: 4px;                    /* 模糊半径，移动端 2px */
-```
+主要位置：`assets/css/extended/custom.css`
 
-- 调透明度就改这几个 alpha；
-- 深色模式选择器必须是 `[data-theme="dark"]`，不要写 `.dark`（PaperMod 没有 `.dark` 类）；
-- 代码块保持不透明，保证可读性。
+- 使用 `--glass-*` 变量
+- 深色模式选择器是 `[data-theme="dark"]`，不要写 `.dark`
+- 不支持的浏览器有 `@supports not` 和 `--fb-glass` 兜底
+- 卡片、页脚、标签、分页、排序菜单、大纲都有玻璃样式
 
-### 5.3 评论（Giscus）
+### 6.3 桌面大纲
 
-位置：`layouts/partials/comments.html`
+- `layouts/partials/toc-sidebar.html`
+- 仅在 `ShowToc: true` 且目录链接数大于 1 时显示
+- 桌面端 `min-width: 1200px`
+- 位置随屏幕自适应，当前高亮项固定在面板中上部
+- 点击大纲标题会落在视口约 34% 处
+- 移动端隐藏，使用文章内的 `<details>` TOC
+- 文章标题的 `scroll-margin-top: 34vh` 也在 `custom.css` 中
 
-- 仓库、分类等 ID 直接写死在这里；
-- 主题用 `noborder_light` / `noborder_dark`，随站点深浅色切换；
-- 文章底部评论是立即加载的，**不要**加 `data-loading="lazy"`，Giscus 的 iframe 初始高度为 0，懒加载会永远不触发；
-- 评论区外框圆角在 `custom.css` 的 `.comments` / `iframe.giscus-frame` 里。
+### 6.4 列表页排序
 
-### 5.4 导航栏与下拉菜单
-
-位置：`layouts/partials/header.html`
-
-- 这是整份主题 header 的复制版，为了支持"另我空间"下拉菜单；
-- 更新主题时**不要**直接用主题文件覆盖它，否则下拉菜单会消失；
-- 菜单项在 `hugo.yaml` 的 `menu.main` 里改；
-- 下拉触发目前是 `<a href="javascript:void(0)">`，只有鼠标悬停；需要键盘/触屏更友好时改成 `<button>` 并给 CSS 加 `:focus-within`。
-
-### 5.5 文章详情页
-
-位置：`layouts/_default/single.html`
-
-- 复制了主题的 `single.html`，只为了在 meta 里加"阅读量"；
-- 同样是主题更新时需要手动同步的文件。
-
-### 5.6 最后更新时间
-
-- `hugo.yaml` 的 `frontmatter.lastmod` 优先读 Git 提交时间；
-- 本地正常；Vercel 是浅克隆，如果线上显示的是构建当天，说明 Git 历史没拿到；
-- 解决：在文章 front matter 手写 `lastmod: '2026-11-08'`，或把配置改成 `:fileModTime`。
-
-### 5.7 搜索
-
-- `content/search.md` 提供 `/search/` 页面；
-- `hugo.yaml` 的 `outputs.home` 包含 JSON，主题的 fastsearch 读取 `/index.json`；
-- 不要删掉 `outputs` 里的 `JSON`。
-
-### 5.8 访问统计与运行天数
-
-- 位置：`extend_head.html`（Vercount 脚本）、`extend_footer.html`（访客数、运行天数）；
-- 运行天数从 `new Date("2026-10-19T00:08:00")` 开始算，改建站日期就改这里。
+- `/posts/` 默认发布时间新到旧
+- `/posts/oldest/` 发布时间旧到新
+- `/posts/updated/` 最后编辑新到旧
+- `/posts/updated-oldest/` 最后编辑旧到新
+- 英文对应 `/en/posts/...`
+- 排序控制：`layouts/partials/sort-control.html`
+- 静态排序页：`content/sorted/`
+- 不要在 `.en.md` 里写语言无关的固定 `/posts/...` URL
 
 ---
 
-## 6. 发布流程 Checklist
+## 7. 核心文件地图
 
-发布一篇新文章前逐项确认：
+| 文件/目录 | 作用 |
+|---|---|
+| `hugo.yaml` | 站点配置、语言、菜单、参数、Markdown、taxonomies |
+| `vercel.json` | Vercel 构建、HUGO_VERSION、缓存头 |
+| `content/posts/` | 中文文章与英文译文 |
+| `content/columns/` | 专栏介绍页 |
+| `content/sorted/` | 隐藏排序页父级 |
+| `content/about.md`、`about.en.md` | 关于页 |
+| `content/archives.md`、`archives.en.md` | 归档页 |
+| `content/search.md`、`search.en.md` | 搜索页 |
+| `content/guestbook.md`、`guestbook.en.md` | 留言板 |
+| `layouts/list.html` | 列表页、排序、阅读量、分页 |
+| `layouts/_default/single.html` | 文章详情、阅读量、语言切换相关 |
+| `layouts/_default/guestbook.html` | 留言板 Waline |
+| `layouts/taxonomy.html` | 标签总览、数量统计 |
+| `layouts/columns/terms.html` | 专栏卡片 |
+| `layouts/partials/header.html` | 导航、语言切换、下拉菜单、背景按钮 |
+| `layouts/partials/waline.html` | 文章评论区 |
+| `layouts/partials/comment-path.html` | 评论/阅读量共享路径 |
+| `layouts/partials/toc-sidebar.html` | 桌面大纲 |
+| `layouts/partials/sort-control.html` | 排序菜单 |
+| `layouts/partials/background-viewer.html` | 全屏背景、换图 |
+| `layouts/partials/extend_head.html` | 背景图、KaTeX、head 扩展 |
+| `layouts/partials/extend_footer.html` | 页脚统计、运行时间、Mermaid |
+| `layouts/shortcodes/` | 内联的 Bilibili/网易云短代码 |
+| `layouts/_default/_markup/render-image.html` | 正文图片懒加载和图注 |
+| `i18n/zh.yaml`、`i18n/en.yaml` | 自定义 UI 文案 |
+| `assets/css/extended/custom.css` | 全站视觉定制 |
+| `static/` | logo、favicon、Safari 图标等 |
+| `docs/` | 本手册，不参与构建 |
 
-- [ ] `draft: false`
-- [ ] `title`、`date` 正确
-- [ ] `tags` 已填
-- [ ] 需要进专栏的话，`columns` 的名字和 `content/columns/` 目录一致
-- [ ] `description` 已写（影响搜索结果和分享预览）
-- [ ] 封面 `cover.image` 文件存在
-- [ ] 正文图片都在 bundle 里，路径没有拼错
-- [ ] `hugo server -D` 本地预览过
-- [ ] `hugo --gc --minify --printPathWarnings` 没有报错
-- [ ] `git status` 里没有不想提交的文件
-- [ ] commit 信息写清楚，push 后确认 Vercel 构建成功
-- [ ] 打开线上页面，硬刷新确认图片和评论正常
+---
+
+## 8. 部署与本地开发
+
+### 8.1 Vercel
+
+- 推送到 `main`
+- Vercel 使用 `HUGO_VERSION=0.167.0`
+- 构建命令：`hugo --gc --minify`
+- 输出目录：`public`
+- `/assets/*` 有长期缓存
+
+### 8.2 本地预览
+
+```bash
+hugo server -D
+```
+
+- `-D` 包含草稿
+- 不要用本地 `public/` 判断线上状态
+- 本地 dev server 可能写入 `livereload.js`，这不是线上问题
+
+### 8.3 构建检查
 
 ```bash
 hugo --gc --minify --printPathWarnings
-git add -A
-git commit -m "post: 文章标题"
-git push
 ```
 
+当前构建会剩下 Hugo/PaperMod 自身的弃用警告：
+
+- `languageCode` 配置弃用
+- `LanguageDirection` / `LanguageCode` / `LanguageName` 主题用法弃用
+
+这些不是当前构建错误，但主题升级时值得处理。
+
 ---
 
-## 7. 常见问题
+## 9. 已知问题 / 待办
 
-### 7.1 评论不加载，只显示浏览器占位/错误页
+> 以下是 2026-11-25 的状态，不要误认为已经修好。
 
-- 检查有没有误加 `data-loading="lazy"`，有就删掉；
-- F12 → Network 搜 `giscus`，看 `client.js` 和 iframe 是否 200；
-- F12 → Console 看 CORS / CSP 报错；
-- 无痕窗口测试，排除 uBlock、AdGuard、Firefox 严格跟踪保护拦截 `giscus.app`。
+### 9.1 英文内容还没翻完
 
-### 7.2 背景图每翻一页就变
+这些 `.en.md` 仍包含中文，或只是占位：
 
-- 正常情况下同一标签页应该不变；
-- 如果接口请求失败，会走 `.catch` 里的直链兜底，直链每次请求都会随机；
-- 检查 `sessionStorage` 是否被浏览器策略禁用（隐私模式、第三方 Cookie 限制）。
+- `content/posts/hello-world.en.md`
+- `content/about.en.md`
+- `content/guestbook.en.md`
+- `content/search.en.md`（placeholder 中文）
+- `content/columns/iNITAL 的垃圾站/_index.en.md`
+- `content/columns/不止 initIal/_index.en.md`
+- `content/posts/yoga-3-11/index.en.md`（正文中文，但 `draft: true`）
 
-### 7.3 图片比例不对
+处理原则：
 
-- 正文图片现在不做任何处理，按原图显示；
-- 封面仍然会被主题处理，必要时设置 `params.cover.responsiveImages: false`；
-- 手机拍的照片注意 EXIF 方向，上传前最好先导出成正常方向。
+- 未翻译完：`draft: true`
+- 已经上线但不完整：翻译或 `robotsNoIndex`
+- 不要为了“让英文站有内容”而保留中文正文
 
-### 7.4 构建日志出现 "Raw HTML omitted"
+### 9.2 英文专栏封面 404
 
-- 正文里用了原生 HTML；
-- 改用 Markdown 扩展语法，或开启 `markup.goldmark.renderer.unsafe: true`。
+- `/en/columns/iNITAL 的垃圾站/cover.webp`
+- `/columns/iNITAL 的垃圾站/page/2/cover.webp`
 
-### 7.5 线上语言、日期变成英文
+原因：`layouts/columns/terms.html` 的兜底相对路径以及英文 branch bundle 资源没有复制到英文输出。修专栏封面时要同时检查分页页和英文页。
 
-- 检查 `hugo.yaml`：
+### 9.3 一处正文坏链
 
-```yaml
-defaultContentLanguage: "zh"
-languageCode: "zh-CN"
+`content/posts/HUAWEI-MateBook-E-2019/index.md` 中有一处链接缺少 `https://`：
+
+```text
+blog.inital.top/posts/huawei-matebook-e-2019-linux/
 ```
 
-- 修改后要 commit + push，Vercel 重新构建才生效。
+会被浏览器当成相对路径。
 
-### 7.6 Vercel 构建失败
+### 9.4 正文图片偏大
 
-优先看构建日志：
+当前正文图片没有响应式处理，单张可能达到 1 MB 级。建议做 Markdown 图片 render hook，生成多尺寸 WebP。封面图已有 `srcset`，不要和正文图片混淆。
 
-- Go 版本问题：`go.mod` 的 `go` 指令高于 Vercel 镜像版本；
-- 主题 submodule 没拉下来；
-- 模板语法错误（本地 `hugo` 会先报）。
+### 9.5 搜索/分类仍按语言分开
 
-临时规避 Go Modules：把 `netease-cloud-music`、`bilibili` 两个短代码复制到 `layouts/shortcodes/`，删掉 `hugo.yaml` 的 `module.imports` 和 `go.mod`、`go.sum`。
+- 搜索索引不共享
+- 标签、专栏 taxonomy 不共享
+- 留言板评论已经共享
 
-### 7.7 修改 CSS 后没变化
+如果以后要做到“全站搜索包含中英文”，需要单独合并索引，不是改一个配置就能完成。
 
-- Hugo 会把 CSS 指纹化，浏览器可能缓存旧文件；
-- 硬刷新（Ctrl+F5）或看 Network 里 CSS 文件名 hash 是否变了；
-- 改了 `hugo.yaml` 或模板后需要重新构建，`hugo server` 一般会自动热更新。
+### 9.6 测试资源
 
----
-
-## 8. 自定义文件地图
-
-| 文件 | 作用 | 什么时候改 |
-|---|---|---|
-| `hugo.yaml` | 站点配置、菜单、参数、Markdown 扩展 | 改菜单、开关功能、语言、分页 |
-| `vercel.json` | 构建命令、缓存头、重定向 | 改构建参数、旧链接跳转 |
-| `.gitignore` | 忽略构建产物 | 一般不动 |
-| `assets/css/extended/custom.css` | 全部自定义样式 | 调毛玻璃、字体、专栏卡片、评论区圆角 |
-| `layouts/partials/header.html` | 导航 + 下拉菜单 | 改菜单结构、可访问性 |
-| `layouts/_default/single.html` | 文章详情模板 | 加阅读量等 meta 信息 |
-| `layouts/partials/post_meta.html` | 日期、最后更新 | 改日期显示规则 |
-| `layouts/_default/_markup/render-image.html` | 图片渲染 | 加懒加载、图注格式 |
-| `layouts/partials/comments.html` | Giscus 评论 | 换评论仓库、主题 |
-| `layouts/partials/extend_head.html` | KaTeX、Vercount、背景图 | 换背景 API、统计脚本 |
-| `layouts/partials/extend_footer.html` | 页脚、运行天数 | 改建站日期、页脚文案 |
-| `layouts/columns/terms.html` | 专栏卡片 | 改专栏卡片布局 |
-| `archetypes/default.md` | 新文章模板 | 改默认 front matter |
-| `content/columns/` | 专栏介绍页 | 新建/修改专栏 |
-| `static/` | 静态图片、logo | 放全局图片 |
-| `themes/PaperMod/` | 主题 submodule | 不直接改，更新用 `git submodule` |
+`static/` 中可能有测试用图片/未使用图片。清理前先全局搜索引用，不要直接删除正在被文章引用的文件。
 
 ---
 
-## 9. 不要做的事
+## 10. 不要做的事
 
-1. **不要提交 `public/`**：它是构建产物，而且可能带着 localhost 的 canonical。
-2. **不要直接改 `themes/PaperMod/`**：它是 submodule，改了不会被仓库记录，主题更新时也会丢。
-3. **不要用 `.dark` 写深色样式**：PaperMod 用的是 `html[data-theme="dark"]`。
-4. **不要给 Giscus 加 `data-loading="lazy"`**：iframe 初始高度为 0，会永远不加载。
-5. **不要随便改专栏目录名**：URL 会变，旧链接需要重定向。
-6. **不要对正文图片加 Hugo `.Resize`**：会重新编码，可能破坏原图比例；要压缩就在上传前手动压。
-7. **不要在 `draft: true` 的文章里引用不存在的封面**：本地 `-D` 能看到，线上构建后是 404。
+1. 不要提交 `public/`
+2. 不要直接改 `themes/PaperMod/`
+3. 不要把中文文章批量改名为 `.zh.md`，当前约定是无后缀中文 + `.en.md` 英文
+4. 不要在 `.en.md` 里写语言无关的固定 `url`
+5. 不要只在一侧写 `translationKey`
+6. 不要重复添加 `hreflang`
+7. 不要随意改 `layouts/partials/comment-path.html`
+8. 不要用 `.dark` 写深色样式，使用 `[data-theme="dark"]`
+9. 不要把 `search.md` / `search.en.md` 的 `robotsNoIndex` 删掉
+10. 不要引入 Hugo Modules 或依赖 Go 的构建步骤
+11. 不要把 `layouts/partials/waline.html` 改成非懒加载
+12. 不要在 `draft: true` 的文章里引用不存在的封面或图片
 
 ---
 
-## 10. 定期维护建议
+## 11. 发布 Checklist
 
-每月或每季度做一次：
+- [ ] 中文 `draft` 已按需关闭
+- [ ] 英文 `.en.md` 已翻译，不是中文复制品
+- [ ] 英文未完成项保持 `draft: true`
+- [ ] `title`、`date`、`description` 正确
+- [ ] `tags`、`columns` 名称存在
+- [ ] 封面和正文图片文件存在
+- [ ] 中英文路径能配对，评论/阅读量路径符合预期
+- [ ] 浅色/深色模式都预览过
+- [ ] `hugo --gc --minify --printPathWarnings` 通过
+- [ ] `git status` 没有多余文件
+- [ ] push 后确认 Vercel 构建成功
+- [ ] 线上检查文章、图片、评论、阅读量
 
-1. 跑一次 `hugo --gc --minify --printPathWarnings`，清掉警告；
-2. 检查线上文章图片有没有 404（尤其是新文章）；
-3. 检查 Vercel 最近几次构建是否成功；
-4. 检查主题是否有更新：
+---
+
+## 12. 给其他 AI 的快速交接
+
+如果让其他 AI 改这个站，先让它读：
+
+1. 本文件
+2. `hugo.yaml`
+3. `layouts/partials/comment-path.html`
+4. `layouts/partials/header.html`
+5. `layouts/list.html`
+6. `layouts/_default/single.html`
+7. 与任务相关的 partial / CSS
+
+需要它先确认：
+
+- 当前语言是 zh 默认、en 在 `/en/`
+- 英文只做译文，不独立发布
+- 评论/阅读量按中文路径共享
+- 留言板共享 `/guestbook/`
+- 搜索和 taxonomy 仍然分开
+- `public/` 不是源码
+- 主题 submodule 不直接改
+
+改完后至少跑：
 
 ```bash
-git submodule update --remote --merge themes/PaperMod
+hugo --gc --minify --printPathWarnings
 ```
 
-更新后重点回归：导航下拉菜单、文章页阅读量、评论区、搜索、背景图。因为 `header.html` 和 `single.html` 是本地复制版，主题更新后如果上游结构变了，需要手动同步这两个文件。
+并检查：
 
-5. 检查 `go.mod` 的 Go 版本是否还能在 Vercel 构建镜像上跑。
+- 中文页面是否仍是 `lang="zh"`
+- 英文页面是否仍是 `lang="en"`
+- 归档 `/archives/` 和 `/en/archives/` 是否都存在
+- 文章评论/阅读量的 `data-path` 是否仍指向中文路径
+- 搜索页是否仍为 `noindex`
+- `robots.txt` 和 `sitemap.xml` 是否还存在
 
 ---
 
-## 11. 快速命令卡片
+## 13. 命令速查
 
 ```bash
-# 新建文章
-hugo new content posts/my-post/index.md
-
 # 本地预览（含草稿）
 hugo server -D
 
-# 构建检查
+# 只构建检查
 hugo --gc --minify --printPathWarnings
+
+# 新文章（Page Bundle）
+hugo new content posts/my-post/index.md
 
 # 发布
 git add -A
 git commit -m "post: 文章标题"
 git push
 
-# 查看当前改动
+# 查看改动
 git status --short
 git diff --stat
 ```
-
----
-
-## 12. 写作小约定（可选）
-
-- 文件名用英文小写短横线：`thinkpad-t430/index.md`，避免中文和空格进 URL；
-- 每篇文章至少一个 `description`，一两句话概括；
-- 标签控制在 3～6 个，专栏只放一个；
-- 图片命名用 `1.webp`、`2.webp` 或语义名，避免 `新建文件`、`IMG_0001`；
-- 封面单独命名 `cover.webp`，和正文图片区分开；
-- 发布前把文章在浅色和深色模式各看一遍，检查图片、表格、代码块、评论。

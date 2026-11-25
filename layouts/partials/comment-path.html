@@ -1,0 +1,11 @@
+{{- /* 英文译文复用中文源文的评论/阅读量路径；中文页面保持原路径不变。 */ -}}
+{{- $defaultLang := "zh" -}}
+{{- $path := .RelPermalink -}}
+{{- if ne .Lang $defaultLang -}}
+  {{- range .Translations -}}
+    {{- if eq .Lang $defaultLang -}}
+      {{- $path = .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $path -}}

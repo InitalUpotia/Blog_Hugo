@@ -61,7 +61,7 @@
         {{ end }}
         
         <div class="column-cover">
-            <img src="{{ $imgSrc }}" alt="{{ .Page.Title }} 缩略图" loading="lazy">
+            <img src="{{ $imgSrc }}" alt="{{ i18n "custom_column_thumbnail" (dict "Title" .Page.Title) }}" loading="lazy">
         </div>
         {{ end }}
 
@@ -71,10 +71,10 @@
                 <h2>{{ .Page.Data.Term }}</h2>
             </header>
             <div class="entry-content">
-                <p>共收录 {{ .Count }} 篇文章</p>
+                <p>{{ i18n "custom_column_posts" (dict "Count" .Count) }}</p>
             </div>
             <footer class="entry-footer">
-                <span class="post-meta">最后更新：{{ $latestPage.Lastmod.Format "2006-01-02" }}</span>
+                <span class="post-meta">{{ i18n "custom_last_updated" }}: {{ $latestPage.Lastmod.Format "2006-01-02" }}</span>
             </footer>
         </div>
         

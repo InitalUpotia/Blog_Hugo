@@ -1,4 +1,10 @@
 {{- if not (.Param "hideFooter") }}
+{{- $unitDays := i18n "custom_unit_days" -}}
+{{- $unitMonths := i18n "custom_unit_months" -}}
+{{- $unitYears := i18n "custom_unit_years" -}}
+{{- $unitDayOne := i18n "custom_unit_day" -}}
+{{- $unitMonthOne := i18n "custom_unit_month" -}}
+{{- $unitYearOne := i18n "custom_unit_year" -}}
 {{/*
   PaperMod 先输出 <footer class="footer">，再调用 extend_footer。
   这里不再新建 footer，而是把统计内容注入到已有的 footer 里，
@@ -6,8 +12,8 @@
 */}}
 <template id="footer-extra">
     <div class="footer-extra">
-        总访客数 <span id="site-uv">—</span> 人 · 总访问量 <span id="site-pv">—</span> 次<br>
-        本站已运行 <span id="run-time-detail">计算中...</span>
+        {{ i18n "custom_site_visitors" }} <span id="site-uv">—</span>{{ if eq .Lang "zh" }} 人{{ end }} · {{ i18n "custom_site_views" }} <span id="site-pv">—</span>{{ if eq .Lang "zh" }} 次{{ end }}<br>
+        {{ i18n "custom_site_runtime" }} <span id="run-time-detail">{{ i18n "custom_calculating" }}</span>
     </div>
 </template>
 
@@ -31,7 +37,7 @@
     if (!detail) return;
 
     if (currentDate < startDate) {
-      detail.textContent = "0 天";
+      detail.textContent = "0 " + '{{ $unitDays }}';
       return;
     }
 
@@ -50,9 +56,9 @@
     }
 
     var result = "";
-    if (years > 0) result += years + " 年 ";
-    if (months > 0) result += months + " 个月 ";
-    result += days + " 天";
+    if (years > 0) result += years + " " + (years === 1 ? '{{ $unitYearOne }}' : '{{ $unitYears }}') + " ";
+    if (months > 0) result += months + " " + (months === 1 ? '{{ $unitMonthOne }}' : '{{ $unitMonths }}') + " ";
+    result += days + " " + (days === 1 ? '{{ $unitDayOne }}' : '{{ $unitDays }}');
 
     detail.textContent = result;
   })();

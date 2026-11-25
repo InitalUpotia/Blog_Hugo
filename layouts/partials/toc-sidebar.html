@@ -1,8 +1,9 @@
 {{- $toc := .TableOfContents -}}
-{{- $toc = $toc | replaceRE `id="TableOfContents"` `id="TableOfContentsSidebar" aria-label="文章大纲"` -}}
+{{- $outline := i18n "custom_outline" -}}
+{{- $toc = $toc | replaceRE `id="TableOfContents"` (printf `id="TableOfContentsSidebar" aria-label="%s"` $outline) -}}
 {{- if $toc -}}
 <aside class="toc-sidebar">
-  <div class="toc-sidebar-title">大纲</div>
+  <div class="toc-sidebar-title">{{ $outline }}</div>
   <div class="toc-sidebar-body">
     {{- $toc | safeHTML -}}
   </div>

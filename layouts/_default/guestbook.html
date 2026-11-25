@@ -1,4 +1,6 @@
 {{- define "main" }}
+{{- $commentPath := partial "comment-path.html" . -}}
+{{- $commentLang := cond (eq .Lang "zh") "zh-CN" "en-US" -}}
 <article class="post-single">
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
@@ -18,7 +20,8 @@
     init({
       el: '#waline',
       serverURL: 'https://waline.inital.top',
-      lang: 'zh-CN',
+      path: '{{ $commentPath }}',
+      lang: '{{ $commentLang }}',
       dark: 'html[data-theme="dark"]',
 
       login: 'enable',          // 允许匿名留言，也可以登录

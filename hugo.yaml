@@ -1,11 +1,13 @@
 baseURL: "https://blog.inital.top/"
 locale: "zh-CN"
 defaultContentLanguage: "zh"
+defaultContentLanguageInSubdir: false
 languageCode: "zh-CN"
 hasCJKLanguage: true
 title: "~ iNITAL_'s Blog ~"
 theme: "PaperMod"
 enableGitInfo: true
+enableRobotsTXT: true
 
 pagination:
   pagerSize: 5  # 设置每页显示 5 篇文章，可根据需要调整
@@ -58,19 +60,20 @@ markup:
 params:
   description: "iNITAL 的个人博客：ACGN、技术、生活与学习记录。"
   keywords: ["iNITAL", "博客", "ACGN", "ThinkPad", "Linux", "二次元"]
+  displayFullLangName: true
   
   homeInfoParams:
     Title: "iNITAL_'s Blog (\\^_\\^)"
     Content: "
       在这里，你可以看到：\n
-      - ACGN相关内容，个人的游戏以及动漫库。\n
+      - ACGN 相关内容，个人的游戏以及动漫库。\n
       - 技术相关内容，个人瞎折腾各种东西的记录。\n
       - 生活相关内容。\n
       - [更多……](/about/)"
 
   label:
     text: "首页"                # 鼠标悬停时显示的文字
-    icon: "/logo.jpg"    # 图片路径，以 / 开头
+    icon: "/logo.webp"    # 图片路径，以 / 开头
     iconHeight: 35              # 图标高度（像素），按需调整
   socialIcons:
     - name: "github"
@@ -103,45 +106,109 @@ params:
   tocopen: false
   # math: true
 
-menu:
-  main:
-    - name: 文章
-      url: /posts/
-      weight: 10
-    - identifier: archives
-      name: 归档
-      url: /archives/
-      weight: 20
-    - identifier: columns
-      name: 专栏
-      url: /columns/
-      weight: 30
-    - identifier: tags
-      name: 标签
-      url: /tags/
-      weight: 40
-    - name: 搜索
-      url: /search/
-      weight: 50
-    - name: 留言板
-      url: /guestbook/
-      weight: 55
-    - name: 关于
-      url: /about/
-      weight: 60
-    - identifier: links
-      name: 另我空间
-      weight: 71
-    - identifier: link-a
-      name: 梦的原点
-      url: https://initalupotia.github.io/
-      weight: 72
-      parent: links
-    - identifier: link-b
-      name: 未麻的部屋
-      url: https://initalupotia.github.io/my-ai-blog/
-      weight: 73
-      parent: links
+languages:
+  zh:
+    label: 中文
+    weight: 1
+    locale: zh-CN
+    menu:
+      main:
+        - name: 文章
+          url: /posts/
+          weight: 10
+        - identifier: archives
+          name: 归档
+          url: /archives/
+          weight: 20
+        - identifier: columns
+          name: 专栏
+          url: /columns/
+          weight: 30
+        - identifier: tags
+          name: 标签
+          url: /tags/
+          weight: 40
+        - name: 搜索
+          url: /search/
+          weight: 50
+        - name: 留言板
+          url: /guestbook/
+          weight: 55
+        - name: 关于
+          url: /about/
+          weight: 60
+        - identifier: links
+          name: 另我空间
+          weight: 71
+        - identifier: link-a
+          name: 梦的原点
+          url: https://initalupotia.github.io/
+          weight: 72
+          parent: links
+        - identifier: link-b
+          name: 未麻的部屋
+          url: https://initalupotia.github.io/my-ai-blog/
+          weight: 73
+          parent: links
+
+  en:
+    label: English
+    weight: 2
+    locale: en-US
+    title: "~ iNITAL_'s Blog ~"
+    params:
+      description: "iNITAL's personal blog: ACGN, technology, life and study notes."
+      keywords: ["iNITAL", "blog", "ACGN", "ThinkPad", "Linux", "anime"]
+      label:
+        text: "Home"
+        icon: "/logo.webp"
+        iconHeight: 35
+      homeInfoParams:
+        Title: "iNITAL_'s Blog (\\^_\\^)"
+        Content: "
+          English translations of selected posts.\n
+          - ACGN and personal notes.\n
+          - Technology and tinkering.\n
+          - Life and study records."
+    menu:
+      main:
+        - name: Posts
+          url: /posts/
+          weight: 10
+        - identifier: archives
+          name: Archives
+          url: /archives/
+          weight: 20
+        - identifier: columns
+          name: Columns
+          url: /columns/
+          weight: 30
+        - identifier: tags
+          name: Tags
+          url: /tags/
+          weight: 40
+        - name: Search
+          url: /search/
+          weight: 50
+        - name: Guestbook
+          url: /guestbook/
+          weight: 55
+        - name: About
+          url: /about/
+          weight: 60
+        - identifier: links
+          name: EGO Complex
+          weight: 71
+        - identifier: link-a
+          name: Original Blog
+          url: https://initalupotia.github.io/
+          weight: 72
+          parent: links
+        - identifier: link-b
+          name: Another Blog
+          url: https://initalupotia.github.io/my-ai-blog/
+          weight: 73
+          parent: links
 
 
 outputs:

@@ -1,0 +1,86 @@
+- id: custom_pageviews
+  translation: "Views"
+- id: custom_posts_count
+  translation:
+    one: "{{ .Count }} post"
+    other: "{{ .Count }} posts"
+- id: custom_tags_count
+  translation:
+    one: "{{ .Count }} tag"
+    other: "{{ .Count }} tags"
+- id: custom_columns_count
+  translation:
+    one: "{{ .Count }} column"
+    other: "{{ .Count }} columns"
+- id: custom_page_info
+  translation: "Page {{ .Page }} of {{ .Total }}"
+- id: custom_back_last
+  translation: "Last page"
+- id: custom_back_first
+  translation: "First page"
+- id: custom_sort_label
+  translation: "Sort"
+- id: custom_sort_date_desc
+  translation: "Published: newest first"
+- id: custom_sort_date_asc
+  translation: "Published: oldest first"
+- id: custom_sort_updated_desc
+  translation: "Updated: newest first"
+- id: custom_sort_updated_asc
+  translation: "Updated: oldest first"
+- id: custom_sort_date_desc_short
+  translation: "Published newest first"
+- id: custom_sort_date_asc_short
+  translation: "Published oldest first"
+- id: custom_sort_updated_desc_short
+  translation: "Updated newest first"
+- id: custom_sort_updated_asc_short
+  translation: "Updated oldest first"
+- id: custom_outline
+  translation: "Outline"
+- id: custom_last_updated
+  translation: "Last updated"
+- id: custom_waline_loading
+  translation: "Loading comments…"
+- id: custom_waline_error
+  translation: "Failed to load comments. Please try again later."
+- id: custom_bg_view
+  translation: "View background image"
+- id: custom_bg_change
+  translation: "Change background image"
+- id: custom_bg_changing
+  translation: "Changing…"
+- id: custom_bg_failed
+  translation: "Failed to change background image"
+- id: custom_bg_close
+  translation: "Background image. Click anywhere or press Esc to close."
+- id: custom_bg_current
+  translation: "Current background image"
+- id: custom_bg_hint
+  translation: "Click anywhere to close"
+- id: custom_site_visitors
+  translation: "Total visitors"
+- id: custom_site_views
+  translation: "Total views"
+- id: custom_site_runtime
+  translation: "Running for"
+- id: custom_calculating
+  translation: "Calculating..."
+- id: custom_unit_days
+  translation: "days"
+- id: custom_unit_months
+  translation: "months"
+- id: custom_unit_years
+  translation: "years"
+- id: custom_unit_day
+  translation: "day"
+- id: custom_unit_month
+  translation: "month"
+- id: custom_unit_year
+  translation: "year"
+- id: custom_column_thumbnail
+  translation: "{{ .Title }} thumbnail"
+- id: custom_column_posts
+  translation:
+    one: "{{ .Count }} post in this column"
+    other: "{{ .Count }} posts in this column"

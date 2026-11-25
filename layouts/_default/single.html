@@ -1,6 +1,7 @@
 {{- define "main" }}
 
 {{- $tocSidebar := and (eq .Section "posts") (.Param "ShowToc") (gt (len (findRE `<a ` .TableOfContents)) 1) -}}
+{{- $commentPath := partial "comment-path.html" . -}}
 <article class="post-single{{ if $tocSidebar }} has-toc-sidebar{{ end }}">
   <header class="post-header">
     {{ partial "breadcrumbs.html" . }}
@@ -28,7 +29,7 @@
       {{- partial "post_canonical.html" . -}}
       {{- if eq .Section "posts" }}
       <div class="meta-item">
-        阅读量 <span class="waline-pageview-count">—</span> 次
+        {{ i18n "custom_pageviews" }} <span class="waline-pageview-count" data-path="{{ $commentPath }}">—</span>{{ if eq .Lang "zh" }} 次{{ end }}
       </div>
       {{- end }}
     </div>
@@ -81,8 +82,9 @@
   if (document.querySelector('.waline-pageview-count')) {
     pageviewCount({
       serverURL: 'https://waline.inital.top',
+      path: '{{ $commentPath }}',
       selector: '.waline-pageview-count',
-      lang: 'zh-CN'
+      lang: {{ if eq .Lang "zh" }}"zh-CN"{{ else }}"en-US"{{ end }}
     });
   }
 </script>

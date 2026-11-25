@@ -1,0 +1,86 @@
+- id: custom_pageviews
+  translation: "阅读量"
+- id: custom_posts_count
+  translation:
+    one: "共 {{ .Count }} 篇文章"
+    other: "共 {{ .Count }} 篇文章"
+- id: custom_tags_count
+  translation:
+    one: "共 {{ .Count }} 个标签"
+    other: "共 {{ .Count }} 个标签"
+- id: custom_columns_count
+  translation:
+    one: "共 {{ .Count }} 个专栏"
+    other: "共 {{ .Count }} 个专栏"
+- id: custom_page_info
+  translation: "第 {{ .Page }} 页 / 共 {{ .Total }} 页"
+- id: custom_back_last
+  translation: "回到尾页"
+- id: custom_back_first
+  translation: "回到第一页"
+- id: custom_sort_label
+  translation: "排序"
+- id: custom_sort_date_desc
+  translation: "发布时间：新 → 旧"
+- id: custom_sort_date_asc
+  translation: "发布时间：旧 → 新"
+- id: custom_sort_updated_desc
+  translation: "最后编辑：新 → 旧"
+- id: custom_sort_updated_asc
+  translation: "最后编辑：旧 → 新"
+- id: custom_sort_date_desc_short
+  translation: "发布时间新→旧"
+- id: custom_sort_date_asc_short
+  translation: "发布时间旧→新"
+- id: custom_sort_updated_desc_short
+  translation: "最后编辑新→旧"
+- id: custom_sort_updated_asc_short
+  translation: "最后编辑旧→新"
+- id: custom_outline
+  translation: "大纲"
+- id: custom_last_updated
+  translation: "最后更新"
+- id: custom_waline_loading
+  translation: "评论加载中…"
+- id: custom_waline_error
+  translation: "评论加载失败，请稍后重试。"
+- id: custom_bg_view
+  translation: "欣赏背景图"
+- id: custom_bg_change
+  translation: "更换图片"
+- id: custom_bg_changing
+  translation: "正在更换…"
+- id: custom_bg_failed
+  translation: "更换失败，请重试"
+- id: custom_bg_close
+  translation: "背景图片，点击任意处或按 Esc 返回"
+- id: custom_bg_current
+  translation: "当前背景图片"
+- id: custom_bg_hint
+  translation: "点击任意处返回"
+- id: custom_site_visitors
+  translation: "总访客数"
+- id: custom_site_views
+  translation: "总访问量"
+- id: custom_site_runtime
+  translation: "本站已运行"
+- id: custom_calculating
+  translation: "计算中..."
+- id: custom_unit_days
+  translation: "天"
+- id: custom_unit_months
+  translation: "个月"
+- id: custom_unit_years
+  translation: "年"
+- id: custom_unit_day
+  translation: "天"
+- id: custom_unit_month
+  translation: "个月"
+- id: custom_unit_year
+  translation: "年"
+- id: custom_column_thumbnail
+  translation: "{{ .Title }} 缩略图"
+- id: custom_column_posts
+  translation:
+    one: "共收录 {{ .Count }} 篇文章"
+    other: "共收录 {{ .Count }} 篇文章"

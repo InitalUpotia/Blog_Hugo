@@ -5,22 +5,32 @@
 {{- partial "index_profile.html" . }}
 {{- else }} {{/* if not profileMode */}}
 
+{{- $postCount := -1 -}}
+{{- if or (eq .Section "posts") .Params.sortBy -}}
+  {{- $postCount = len (where site.RegularPages "Section" "posts") -}}
+{{- end -}}
+
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
   {{- partial "breadcrumbs.html" . }}
-  <h1>
-    {{ .Title }}
-    {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "ShowRssButtonInSectionTermList") }}
-    {{- with .OutputFormats.Get "rss" }}
-    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" height="23">
-        <path d="M4 11a9 9 0 0 1 9 9" />
-        <path d="M4 4a16 16 0 0 1 16 16" />
-        <circle cx="5" cy="19" r="1" />
-      </svg>
-    </a>
-    {{- end }}
+  <h1 class="page-header-title">
+    <span class="page-header-title-main">
+      {{ .Title }}
+      {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "ShowRssButtonInSectionTermList") }}
+      {{- with .OutputFormats.Get "rss" }}
+      <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" height="23">
+          <path d="M4 11a9 9 0 0 1 9 9" />
+          <path d="M4 4a16 16 0 0 1 16 16" />
+          <circle cx="5" cy="19" r="1" />
+        </svg>
+      </a>
+      {{- end }}
+      {{- end }}
+    </span>
+    {{- if ge $postCount 0 }}
+    <span class="page-header-count">{{ i18n "custom_posts_count" (dict "Count" $postCount) }}</span>
     {{- end }}
   </h1>
   {{- if .Description }}
@@ -106,10 +116,11 @@
     {{- end }}
 
     {{- if not (.Param "hideMeta") }}
+    {{- $commentPath := partial "comment-path.html" . }}
     <footer class="entry-footer">
       {{- partial "post_meta.html" . -}}
       {{- if eq .Section "posts" -}}
-      &nbsp;·&nbsp;<span class="list-pageview">阅读量 <span class="waline-pageview-count" data-path="{{ .RelPermalink }}">—</span> 次</span>
+      &nbsp;·&nbsp;<span class="list-pageview">{{ i18n "custom_pageviews" }} <span class="waline-pageview-count" data-path="{{ $commentPath }}">—</span>{{ if eq .Lang "zh" }} 次{{ end }}</span>
       {{- end -}}
     </footer>
     {{- end }}
@@ -125,19 +136,19 @@
     {{- if $paginator.HasPrev }}
     <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">«&nbsp;{{ i18n "prev_page" }}</a>
     {{- else if gt $paginator.TotalPages 2 }}
-    <a class="prev jump" href="{{ (index $paginator.Pagers (sub $paginator.TotalPages 1)).URL | absURL }}">回到尾页&nbsp;»</a>
+    <a class="prev jump" href="{{ (index $paginator.Pagers (sub $paginator.TotalPages 1)).URL | absURL }}">{{ i18n "custom_back_last" }}&nbsp;»</a>
     {{- end }}
 
     {{- if (.Param "ShowPageNums") }}
     <span class="page-info">
-      第&nbsp;{{ $paginator.PageNumber }}&nbsp;页&nbsp;/&nbsp;共&nbsp;{{ $paginator.TotalPages }}&nbsp;页
+      {{ i18n "custom_page_info" (dict "Page" $paginator.PageNumber "Total" $paginator.TotalPages) }}
     </span>
     {{- end }}
 
     {{- if $paginator.HasNext }}
     <a class="next" href="{{ $paginator.Next.URL | absURL }}">{{ i18n "next_page" }}&nbsp;»</a>
     {{- else if gt $paginator.TotalPages 2 }}
-    <a class="next jump" href="{{ (index $paginator.Pagers 0).URL | absURL }}">«&nbsp;回到第一页</a>
+    <a class="next jump" href="{{ (index $paginator.Pagers 0).URL | absURL }}">«&nbsp;{{ i18n "custom_back_first" }}</a>
     {{- end }}
   </nav>
 </footer>

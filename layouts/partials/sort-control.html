@@ -1,15 +1,15 @@
 {{- $sortBy := .Params.sortBy | default "Date" -}}
 {{- $sortOrder := .Params.sortOrder | default "desc" -}}
-{{- $label := "发布时间：新 → 旧" -}}
+{{- $label := i18n "custom_sort_date_desc" -}}
 {{- if and (eq $sortBy "Date") (eq $sortOrder "asc") -}}
-  {{- $label = "发布时间：旧 → 新" -}}
+  {{- $label = i18n "custom_sort_date_asc" -}}
 {{- else if and (eq $sortBy "Lastmod") (eq $sortOrder "desc") -}}
-  {{- $label = "最后编辑：新 → 旧" -}}
+  {{- $label = i18n "custom_sort_updated_desc" -}}
 {{- else if and (eq $sortBy "Lastmod") (eq $sortOrder "asc") -}}
-  {{- $label = "最后编辑：旧 → 新" -}}
+  {{- $label = i18n "custom_sort_updated_asc" -}}
 {{- end -}}
 <div class="list-sort">
-  <span class="list-sort-label" id="sort-label">排序</span>
+  <span class="list-sort-label" id="sort-label">{{ i18n "custom_sort_label" }}</span>
   <div class="sort-menu" id="sort-menu">
     <button type="button" class="sort-menu-toggle"
             aria-haspopup="true" aria-expanded="false"
@@ -19,23 +19,23 @@
     </button>
 
     <div class="sort-menu-panel" role="menu" aria-labelledby="sort-label" aria-hidden="true">
-      <a role="menuitem" href="{{ "/posts/" | relURL }}"
-        {{- if and (eq $sortBy "Date") (eq $sortOrder "desc") }} aria-current="page"{{ end }}>发布时间：新 → 旧</a>
-      <a role="menuitem" href="{{ "/posts/oldest/" | relURL }}"
-        {{- if and (eq $sortBy "Date") (eq $sortOrder "asc") }} aria-current="page"{{ end }}>发布时间：旧 → 新</a>
-      <a role="menuitem" href="{{ "/posts/updated/" | relURL }}"
-        {{- if and (eq $sortBy "Lastmod") (eq $sortOrder "desc") }} aria-current="page"{{ end }}>最后编辑：新 → 旧</a>
-      <a role="menuitem" href="{{ "/posts/updated-oldest/" | relURL }}"
-        {{- if and (eq $sortBy "Lastmod") (eq $sortOrder "asc") }} aria-current="page"{{ end }}>最后编辑：旧 → 新</a>
+      <a role="menuitem" href="{{ "/posts/" | relLangURL }}"
+        {{- if and (eq $sortBy "Date") (eq $sortOrder "desc") }} aria-current="page"{{ end }}>{{ i18n "custom_sort_date_desc" }}</a>
+      <a role="menuitem" href="{{ "/posts/oldest/" | relLangURL }}"
+        {{- if and (eq $sortBy "Date") (eq $sortOrder "asc") }} aria-current="page"{{ end }}>{{ i18n "custom_sort_date_asc" }}</a>
+      <a role="menuitem" href="{{ "/posts/updated/" | relLangURL }}"
+        {{- if and (eq $sortBy "Lastmod") (eq $sortOrder "desc") }} aria-current="page"{{ end }}>{{ i18n "custom_sort_updated_desc" }}</a>
+      <a role="menuitem" href="{{ "/posts/updated-oldest/" | relLangURL }}"
+        {{- if and (eq $sortBy "Lastmod") (eq $sortOrder "asc") }} aria-current="page"{{ end }}>{{ i18n "custom_sort_updated_asc" }}</a>
     </div>
   </div>
 
   <noscript>
     <span class="list-sort-links">
-      <a href="{{ "/posts/" | relURL }}">发布时间新→旧</a> ·
-      <a href="{{ "/posts/oldest/" | relURL }}">发布时间旧→新</a> ·
-      <a href="{{ "/posts/updated/" | relURL }}">最后编辑新→旧</a> ·
-      <a href="{{ "/posts/updated-oldest/" | relURL }}">最后编辑旧→新</a>
+      <a href="{{ "/posts/" | relLangURL }}">{{ i18n "custom_sort_date_desc_short" }}</a> ·
+      <a href="{{ "/posts/oldest/" | relLangURL }}">{{ i18n "custom_sort_date_asc_short" }}</a> ·
+      <a href="{{ "/posts/updated/" | relLangURL }}">{{ i18n "custom_sort_updated_desc_short" }}</a> ·
+      <a href="{{ "/posts/updated-oldest/" | relLangURL }}">{{ i18n "custom_sort_updated_asc_short" }}</a>
     </span>
   </noscript>
 </div>

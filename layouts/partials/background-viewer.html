@@ -1,7 +1,13 @@
+{{- $bgClose := i18n "custom_bg_close" -}}
+{{- $bgCurrent := i18n "custom_bg_current" -}}
+{{- $bgHint := i18n "custom_bg_hint" -}}
+{{- $bgChanging := i18n "custom_bg_changing" -}}
+{{- $bgChange := i18n "custom_bg_change" -}}
+{{- $bgFailed := i18n "custom_bg_failed" -}}
 <div id="bg-viewer" class="bg-viewer" role="dialog" aria-modal="true"
-     aria-label="背景图片，点击任意处或按 Esc 返回" aria-hidden="true" tabindex="-1">
-  <div class="bg-viewer-image" role="img" aria-label="当前背景图片"></div>
-  <div class="bg-viewer-hint" aria-hidden="true">点击任意处返回</div>
+     aria-label="{{ $bgClose }}" aria-hidden="true" tabindex="-1">
+  <div class="bg-viewer-image" role="img" aria-label="{{ $bgCurrent }}"></div>
+  <div class="bg-viewer-hint" aria-hidden="true">{{ $bgHint }}</div>
 </div>
 
 <script>
@@ -26,7 +32,7 @@
         changeBtn.disabled = true;
         changeBtn.classList.add('is-loading');
         changeBtn.setAttribute('aria-busy', 'true');
-        changeBtn.title = '正在更换…';
+        changeBtn.title = '{{ $bgChanging }}';
 
         if (changeTitleTimer) clearTimeout(changeTitleTimer);
 
@@ -34,11 +40,11 @@
           changeBtn.disabled = false;
           changeBtn.classList.remove('is-loading');
           changeBtn.removeAttribute('aria-busy');
-          changeBtn.title = ok ? '更换图片' : '更换失败，请重试';
+          changeBtn.title = ok ? '{{ $bgChange }}' : '{{ $bgFailed }}';
 
           if (!ok) {
             changeTitleTimer = setTimeout(function () {
-              changeBtn.title = '更换图片';
+              changeBtn.title = '{{ $bgChange }}';
             }, 2000);
           }
         }

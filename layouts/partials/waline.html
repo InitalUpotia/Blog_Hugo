@@ -1,5 +1,9 @@
+{{- $commentPath := partial "comment-path.html" . -}}
+{{- $walineLang := cond (eq .Lang "zh") "zh-CN" "en-US" -}}
+{{- $walineLoading := i18n "custom_waline_loading" -}}
+{{- $walineError := i18n "custom_waline_error" -}}
 <div id="waline" class="waline-wrap">
-  <div class="waline-loading">评论加载中…</div>
+  <div class="waline-loading">{{ $walineLoading }}</div>
 </div>
 
 <script type="module">
@@ -25,7 +29,8 @@
       mod.init({
         el: '#waline',
         serverURL: 'https://waline.inital.top',
-        lang: 'zh-CN',
+        path: '{{ $commentPath }}',
+        lang: '{{ $walineLang }}',
         dark: 'html[data-theme="dark"]',
 
         login: 'enable',
@@ -39,7 +44,7 @@
       });
     }).catch(function (e) {
       console.error('Waline load failed', e);
-      el.textContent = '评论加载失败，请稍后重试。';
+      el.textContent = '{{ $walineError }}';
     });
   }
 
