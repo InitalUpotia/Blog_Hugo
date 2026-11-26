@@ -1,6 +1,6 @@
 {{- define "main" }}
 
-{{- $tocSidebar := and (eq .Section "posts") (.Param "ShowToc") (gt (len (findRE `<a ` .TableOfContents)) 1) -}}
+{{- $tocSidebar := and (.Param "ShowToc") (gt (len (findRE `<a ` .TableOfContents)) 1) -}}
 {{- $commentPath := partial "comment-path.html" . -}}
 <article class="post-single{{ if $tocSidebar }} has-toc-sidebar{{ end }}">
   <header class="post-header">
