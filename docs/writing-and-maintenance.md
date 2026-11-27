@@ -1,7 +1,7 @@
 # 博客写作与维护手册
 
 > 本文件放在 `docs/` 下，不参与 Hugo 站点构建。
-> 最后核对时间：2026-11-25。
+> 最后核对时间：2026-11-27。
 > 目标：让作者本人和其他 AI 在尽量少的上下文下，快速理解站点结构、写作流程和不可随意改动的部分。
 
 ---
@@ -377,6 +377,39 @@ Goldmark 的 `unsafe` 没有开启，原始 HTML 默认不渲染。
 - 标签自动生成 `/tags/`
 - 专栏 URL 和目录名有关，上线后尽量不要改名
 
+### 4.7 引用本篇章节（平滑滚动）
+
+短代码：`layouts/shortcodes/section-link.html`
+
+推荐给目标标题固定 ID：
+
+```markdown
+## 配置说明 {#config}
+```
+
+正文里引用：
+
+```markdown
+详见 {{< section-link "#config" "配置说明" >}}。
+```
+
+也支持命名参数：
+
+```markdown
+详见 {{< section-link anchor="#config" text="配置说明" >}}。
+```
+
+行为：
+
+- 生成 `#config` 的本篇锚点链接
+- 复用 PaperMod 已有的文章内平滑滚动
+- 不会新开标签页
+- 目标标题会按 `scroll-margin-top` 落在视口约 34% 的位置
+- 尊重 `prefers-reduced-motion`：系统要求减少动态效果时直接定位
+- 只用于本篇章节；跨文章仍用普通链接或 `relref`
+
+目标标题没有固定 ID 时，也可以填 Hugo 自动生成的 ID，但以后改标题文字可能失效。
+
 ---
 
 ## 5. 评论、阅读量与外部服务
@@ -529,6 +562,7 @@ Waline path：两边都是 /posts/foo/
 | `layouts/partials/extend_head.html` | 背景图、KaTeX、head 扩展 |
 | `layouts/partials/extend_footer.html` | 页脚统计、运行时间、Mermaid |
 | `layouts/shortcodes/` | 内联的 Bilibili/网易云短代码 |
+| `layouts/shortcodes/section-link.html` | 本篇章节引用，文章内平滑滚动 |
 | `layouts/_default/_markup/render-image.html` | 正文图片懒加载和图注 |
 | `i18n/zh.yaml`、`i18n/en.yaml` | 自定义 UI 文案 |
 | `assets/css/extended/custom.css` | 全站视觉定制 |

@@ -1,0 +1,12 @@
+{{- /* 引用本篇章节，并在文章内平滑滚动。用法：
+       {{< section-link "#config" "配置说明" >}}
+       或
+       {{< section-link anchor="#config" text="配置说明" >}}
+*/ -}}
+{{- $anchor := .Get "anchor" | default (.Get 0) -}}
+{{- $text := .Get "text" | default (.Get 1) -}}
+{{- if not $anchor -}}
+  {{- errorf "section-link: 缺少 anchor 参数（%s）" .Position -}}
+{{- end -}}
+{{- $anchor = strings.TrimPrefix "#" $anchor -}}
+<a class="section-link" href="#{{ $anchor }}">{{ $text | default $anchor }}</a>
