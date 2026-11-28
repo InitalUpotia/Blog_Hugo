@@ -84,3 +84,5 @@
   translation:
     one: "共收录 {{ .Count }} 篇文章"
     other: "共收录 {{ .Count }} 篇文章"
+- id: custom_page_loading
+  translation: "加载中..."

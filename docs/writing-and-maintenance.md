@@ -1,7 +1,7 @@
 # 博客写作与维护手册
 
 > 本文件放在 `docs/` 下，不参与 Hugo 站点构建。
-> 最后核对时间：2026-11-27。
+> 最后核对时间：2026-11-28。
 > 目标：让作者本人和其他 AI 在尽量少的上下文下，快速理解站点结构、写作流程和不可随意改动的部分。
 
 ---
@@ -533,6 +533,28 @@ Waline path：两边都是 /posts/foo/
 - 静态排序页：`content/sorted/`
 - 不要在 `.en.md` 里写语言无关的固定 `/posts/...` URL
 
+### 6.5 页面切换与顶部进度条
+
+- DOM 和脚本：`layouts/partials/page-transition.html`
+- 在 `header.html` 最前面引入，保证遮罩尽早出现在 DOM 中
+- 样式在 `assets/css/extended/custom.css` 的 `.page-transition` / `.page-progress`
+
+行为：
+
+- 页面进入：遮罩显示当前背景图和蒙版，再淡出
+- 遮罩本身复用当前背景图和蒙版，切换时不会出现纯色空白
+- 点击同源普通链接：遮罩淡入，约 260ms 后导航
+- 顶部 3px 进度条在加载/切换时显示，下方显示“加载中...”毛玻璃标签
+- 进度条文案来自 `i18n/zh.yaml` / `i18n/en.yaml` 的 `custom_page_loading`
+- 加载标签在不支持 `backdrop-filter` 的浏览器里会自动回退到半透明底色
+- 内部 `#锚点` 交给 PaperMod 原有平滑滚动，不触发整页切换
+- 外链、`target="_blank"`、`download`、修饰键点击不拦截
+- 支持 `data-no-transition` 跳过过渡
+- 支持 `prefers-reduced-motion`
+- 不需要 SPA，也没有使用 PJAX
+
+如果以后加新的全局导航脚本，注意不要重复拦截点击，也不要在 `#锚点` 上阻止默认行为。
+
 ---
 
 ## 7. 核心文件地图
@@ -559,6 +581,7 @@ Waline path：两边都是 /posts/foo/
 | `layouts/partials/toc-sidebar.html` | 桌面大纲 |
 | `layouts/partials/sort-control.html` | 排序菜单 |
 | `layouts/partials/background-viewer.html` | 全屏背景、换图 |
+| `layouts/partials/page-transition.html` | 页面淡入淡出、顶部进度条 |
 | `layouts/partials/extend_head.html` | 背景图、KaTeX、head 扩展 |
 | `layouts/partials/extend_footer.html` | 页脚统计、运行时间、Mermaid |
 | `layouts/shortcodes/` | 内联的 Bilibili/网易云短代码 |

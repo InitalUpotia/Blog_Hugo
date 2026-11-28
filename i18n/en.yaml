@@ -84,3 +84,5 @@
   translation:
     one: "{{ .Count }} post in this column"
     other: "{{ .Count }} posts in this column"
+- id: custom_page_loading
+  translation: "Loading..."

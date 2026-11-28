@@ -3,7 +3,7 @@ date: '2026-11-27T22:26:28+08:00'
 draft: false
 title: 'iNITAL 的垃圾站：夕阳下的蓝色巨人——IBM ThinkPad X32'
 author: 'iNITAL'
-columns: ['iNITAL 的垃圾站 ~']
+columns: ['iNITAL 的垃圾站']
 tags: ['技术','硬件','ThinkPad','怀旧','midi','捡漏']
 cover:
     image: "cover.webp"

@@ -1,0 +1,114 @@
+{{- $loadingText := i18n "custom_page_loading" -}}
+<div id="page-transition" class="page-transition" aria-hidden="true"></div>
+<div id="page-progress" class="page-progress" aria-hidden="true">
+  <span class="page-progress-bar"></span>
+  <span class="page-progress-label">{{ $loadingText }}</span>
+</div>
+
+<script>
+(function () {
+  var overlay = document.getElementById('page-transition');
+  var progress = document.getElementById('page-progress');
+  var bar = progress && progress.querySelector('.page-progress-bar');
+  if (!overlay || !progress || !bar) return;
+
+  var reduced = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var leaving = false;
+  var progressTimer = null;
+  var finishTimer = null;
+
+  function startProgress() {
+    if (progressTimer) clearInterval(progressTimer);
+    if (finishTimer) clearTimeout(finishTimer);
+    progress.classList.add('is-visible');
+    var value = 0.08;
+    bar.style.transform = 'scaleX(' + value + ')';
+    progressTimer = setInterval(function () {
+      value = Math.min(0.92, value + (1 - value) * 0.08);
+      bar.style.transform = 'scaleX(' + value + ')';
+    }, 120);
+  }
+
+  function finishProgress() {
+    if (progressTimer) {
+      clearInterval(progressTimer);
+      progressTimer = null;
+    }
+    if (!progress.classList.contains('is-visible')) return;
+    bar.style.transform = 'scaleX(1)';
+    finishTimer = setTimeout(function () {
+      progress.classList.remove('is-visible');
+      bar.style.transform = 'scaleX(0)';
+    }, 220);
+  }
+
+  function shouldTransition(link, event) {
+    if (event.defaultPrevented || event.button !== 0 ||
+        event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false;
+    if (link.target && link.target !== '_self') return false;
+    if (link.hasAttribute('download') || link.hasAttribute('data-no-transition')) return false;
+
+    var raw = link.getAttribute('href');
+    if (!raw || raw.charAt(0) === '#') return false;
+    if (/^(mailto:|tel:|javascript:|data:)/i.test(raw)) return false;
+
+    var url;
+    try {
+      url = new URL(link.href, location.href);
+    } catch (e) {
+      return false;
+    }
+    if (url.origin !== location.origin) return false;
+
+    // 同一页面的锚点交给主题已有的平滑滚动处理
+    if (url.pathname === location.pathname &&
+        url.search === location.search && url.hash) return false;
+
+    return true;
+  }
+
+  function leave(url) {
+    if (leaving) return;
+    leaving = true;
+    startProgress();
+
+    if (reduced) {
+      location.href = url;
+      return;
+    }
+
+    overlay.classList.add('is-leaving');
+    window.setTimeout(function () {
+      location.href = url;
+    }, 260);
+  }
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest
+      ? event.target.closest('a[href]')
+      : null;
+    if (!link || !shouldTransition(link, event)) return;
+
+    event.preventDefault();
+    leave(link.href);
+  }, false);
+
+  window.addEventListener('pageshow', function (event) {
+    if (!event.persisted) return;
+    leaving = false;
+    overlay.classList.remove('is-leaving');
+    progress.classList.remove('is-visible');
+    bar.style.transform = 'scaleX(0)';
+    if (progressTimer) clearInterval(progressTimer);
+  });
+
+  if (document.readyState === 'complete') {
+    finishProgress();
+  } else {
+    startProgress();
+    window.addEventListener('load', finishProgress);
+    window.addEventListener('pageshow', finishProgress);
+  }
+})();
+</script>
